@@ -1,0 +1,16 @@
+/*Header 추가 css*/
+.maincate::after {
+  content: "";
+  width: 0;
+  height: 1px;
+  background: rgb(95, 0, 128);
+  display: block;
+}
+
+.maincate:hover {
+  color: rgb(95, 0, 128) !important;
+}
+
+.maincate:hover::after {
+  width: 100%;
+}

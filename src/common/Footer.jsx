@@ -292,6 +292,8 @@ export default Footer;
 
 const FootBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
+  width: 1020px;
+  margin: 0 auto;
 `;
 
 const Bot1Flex = styled.div`
