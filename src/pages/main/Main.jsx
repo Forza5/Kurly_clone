@@ -14,6 +14,15 @@ const Main = () => {
       <button type="button" onClick={() => navigate("/login")}>
         로그인 이동
       </button>
+      <button type="button" onClick={() => navigate("/signup")}>
+        이동2
+      </button>
+      <button type="button" onClick={() => navigate("/header")}>
+        헤더
+      </button>
+      <button type="button" onClick={() => navigate("/cart")}>
+        장바구니
+      </button>
     </div>
   );
 };

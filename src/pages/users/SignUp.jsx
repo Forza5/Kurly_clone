@@ -2,8 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import Button from "../../common/Button";
-
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AcyncCreateMember } from "../../modules/membersSlice";
+import { Postcode } from "react-daum-postcode/lib/loadPostcode";
+import PopupDom from "./PopupDom";
+import PopupPostCode from "./PopupPostCode";
+import "../css/signup.css";
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   //아이디 선언
   const [id, setId] = useState("");
   //오류메세지
@@ -13,7 +22,6 @@ const SignUp = () => {
 
   const onChangeId = (e) => {
     const idRegex = /^[A-za-z0-9]{6,16}$/;
-    console.log(e.target.value);
     setId(e.target.value);
     if (!idRegex.test(id)) {
       setIdMessage("6자 이상 16자 이하의 영문 혹은 영문과 숫자를 조합");
@@ -32,7 +40,6 @@ const SignUp = () => {
 
   const onChangePw = (e) => {
     const pwRegex = /^[A-za-z0-9]{10,}$/;
-    console.log(e.target.value);
     setPw(e.target.value);
     if (!pwRegex.test(pw)) {
       setPwMessage("최소 10자 이상 입력");
@@ -41,6 +48,108 @@ const SignUp = () => {
       setPwMessage("");
       setIsPw(true);
     }
+  };
+  //비밀번호 확인 선언
+  const [pwConfirm, setPwConfirm] = useState("");
+  //오류메세지
+  const [pwConfirmMessage, setPwConfirmMessage] = useState("");
+  //유효성검사
+  const [isPwConfirm, setIsPwConfirm] = useState(false);
+
+  const onChangePwConfirm = (e) => {
+    console.log(e.target.value);
+    setPwConfirm(e.target.value);
+    if (pw !== pwConfirm) {
+      setPwConfirmMessage("동일한 비밀번호를 입력");
+      setIsPwConfirm(false);
+    } else {
+      setPwConfirmMessage("");
+      setIsPwConfirm(true);
+    }
+  };
+  //이름 선언
+  const [name, setName] = useState("");
+
+  const onChangeName = (e) => {
+    console.log(e.target.value);
+    setName(e.target.value);
+  };
+  //이메일 선언
+  const [email, setEmail] = useState("");
+  //오류메세지
+  const [emailMessage, setEmailMessage] = useState("");
+  //유효성검사
+  const [isEmail, setIsEmail] = useState(false);
+
+  const onChangeEmail = (e) => {
+    const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+    console.log(e.target.value);
+    setEmail(e.target.value);
+    if (!emailRegex.test(email)) {
+      setEmailMessage("이메일 형식으로 입력해 주세요");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("");
+      setIsEmail(true);
+    }
+  };
+  //핸드폰 번호 선언
+  const [phoneNum, setPhoneNum] = useState("");
+  //오류메세지
+  const [phoneNumMessage, setPhoneNumMessage] = useState("");
+  //유효성검사
+  const [isPhoneNum, setIsPhoneNum] = useState(false);
+
+  const onChangePhoneNum = (e) => {
+    const PhoneNumRegex = /^[0-9]{0,11}$/;
+    console.log(e.target.value);
+    setPhoneNum(e.target.value);
+    if (!PhoneNumRegex.test(phoneNum)) {
+      setPhoneNumMessage("휴대폰 번호를 입력해 주세요");
+      setIsPhoneNum(false);
+    } else {
+      setPhoneNumMessage("");
+      setIsPhoneNum(true);
+    }
+  };
+
+  //주소검색
+  // 팝업창 상태 관리
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // 팝업창 열기
+  const openPostCode = () => {
+    setIsPopupOpen(true);
+  };
+
+  // 팝업창 닫기
+  const closePostCode = () => {
+    setIsPopupOpen(false);
+  };
+  const [address, setAddress] = useState(false);
+
+  const parentFunction = (child) => {
+    setAddress(child);
+    console.log(address);
+  };
+
+  //회원정보
+  const account = {
+    id: id,
+    password: pw,
+    confirm: pwConfirm,
+    name: name,
+    email: email,
+    phoneNum: phoneNum,
+    address: "",
+    detailaddress: "",
+    birthday: "",
+  };
+
+  //가입하기 클릭 함수
+  const onCreateHandler = () => {
+    // dispatch(AcyncCreateMember(account));
+    // navigate("/members/login");
   };
 
   return (
@@ -78,7 +187,16 @@ const SignUp = () => {
             비밀번호<Span>*</Span>
           </StLabel>
           <StFormbox>
-            <StInput type="password" placeholder="비밀번호를 입력해주세요" />
+            <StInput
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              onChange={onChangePw}
+            />
+            {pw.length > 0 && (
+              <span className={`message ${isPw ? "success" : "error"}`}>
+                {pwMessage}
+              </span>
+            )}
           </StFormbox>
         </StRow>
         <StRow>
@@ -89,6 +207,7 @@ const SignUp = () => {
             <StInput
               type="password"
               placeholder="비밀번호를 한번 더 입력해주세요"
+              onChange={onChangePwConfirm}
             />
           </StFormbox>
         </StRow>
@@ -97,7 +216,10 @@ const SignUp = () => {
             이름<Span>*</Span>
           </StLabel>
           <StFormbox>
-            <StInput placeholder="이름을 입력해주세요" />
+            <StInput
+              placeholder="이름을 입력해주세요"
+              onChange={onChangeName}
+            />
           </StFormbox>
         </StRow>
         <StRow>
@@ -105,7 +227,16 @@ const SignUp = () => {
             이메일<Span>*</Span>
           </StLabel>
           <StFormbox>
-            <StInput type="email" placeholder="예: marketkurly@kurly.com" />
+            <StInput
+              type="email"
+              placeholder="예: marketkurly@kurly.com"
+              onChange={onChangeEmail}
+            />
+            {email.length > 0 && (
+              <span className={`message ${isEmail ? "success" : "error"}`}>
+                {emailMessage}
+              </span>
+            )}
           </StFormbox>
 
           <Button width="150px">중복확인</Button>
@@ -115,7 +246,18 @@ const SignUp = () => {
             휴대폰<Span>*</Span>
           </StLabel>
           <StFormbox>
-            <StInput type="number" placeholder="숫자만 입력해주세요." />
+            <StInput
+              className="phone"
+              type="number"
+              placeholder="숫자만 입력해주세요."
+              onChange={onChangePhoneNum}
+              onkeypress="checkNumber(event)"
+            />
+            {phoneNum.length > 0 && (
+              <span className={`message ${isPhoneNum ? "success" : "error"}`}>
+                {phoneNumMessage}
+              </span>
+            )}
           </StFormbox>
           <Button width="150px">인증번호 받기</Button>
         </StRow>
@@ -124,26 +266,35 @@ const SignUp = () => {
             주소<Span>*</Span>
           </StLabel>
           <StFormbox>
-            <Button width="100%" height="50px">
+            <Button onClick={openPostCode} width="100%" height="50px">
               <span>
                 <Img
                   src="https://res.kurly.com/pc/service/cart/2007/ico_search.svg"
-                  alt=""
-                  class="css-1m3kac1 e4nu7ef0"
+                  alt="주소검색"
                 />
                 주소검색
               </span>
             </Button>
+            <div id="popupDom">
+              {isPopupOpen && (
+                <PopupDom>
+                  <PopupPostCode
+                    onClose={closePostCode}
+                    parentFunction={parentFunction}
+                  />
+                </PopupDom>
+              )}
+            </div>
             <p>배송지에 따라 상품 정보가 달라질 수 있습니다.</p>
           </StFormbox>
         </StRow>
         <StRow>
           <StLabel>성별</StLabel>
-          <StRadio type="radio" name="gender" />
+          <StRadio type="radio" name="gender" value="male" />
           <span>남자</span>
-          <StRadio type="radio" name="gender" />
+          <StRadio type="radio" name="gender" value="female" />
           <span>여자</span>
-          <StRadio type="radio" name="gender" />
+          <StRadio type="radio" name="gender" value="none" />
           <span>선택안함</span>
         </StRow>
         <StRow>
@@ -194,12 +345,13 @@ const SignUp = () => {
             <StRow>
               <StVertical>
                 <StCheckbox type="checkbox" />
-
-                <img
-                  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K"
-                  alt=""
-                ></img>
-                <span>전체 동의합니다.</span>
+                <div style={{ display: "flex" }}>
+                  <img
+                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K"
+                    alt=""
+                  ></img>
+                  <span>전체 동의합니다.</span>
+                </div>
 
                 <p>
                   선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
@@ -219,17 +371,21 @@ const SignUp = () => {
             </StRow>
             <StRow>
               <StCheckbox type="checkbox" />
-              <div>
-                개인정보 수집∙이용 동의 <span>(필수)</span>
-              </div>
-              <div>약관보기 〉</div>
+              <StHorizontal>
+                <div>
+                  개인정보 수집∙이용 동의 <span>(필수)</span>
+                </div>
+                <div>약관보기 〉</div>
+              </StHorizontal>
             </StRow>
             <StRow>
               <StCheckbox type="checkbox" />
-              <div>
-                개인정보 수집∙이용 동의 <span>(선택)</span>
-              </div>
-              <div>약관보기 〉</div>
+              <StHorizontal>
+                <div>
+                  개인정보 수집∙이용 동의 <span>(선택)</span>
+                </div>
+                <div>약관보기 〉</div>
+              </StHorizontal>
             </StRow>
             <StRow>
               <StCheckbox type="checkbox" />
@@ -257,7 +413,7 @@ const SignUp = () => {
         </Lower>
       </div>
       <>
-        <StButton>가입하기</StButton>
+        <StButton onClick={onCreateHandler}>가입하기</StButton>
       </>
     </Container>
   );
@@ -268,14 +424,14 @@ export default SignUp;
 //전체
 const Container = styled.div`
   width: 680px; // px 말고 다른거??
+  margin: 0 auto;
 `;
 //회원가입 제목
 const StTitle = styled.h2`
   font-weight: 500;
   font-size: 28px;
   text-align: center;
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin: 50px 0;
 `;
 //항목 전체 박스
 const StRow = styled.div`
@@ -347,9 +503,7 @@ const Lower = styled.div`
 const StFormbox = styled.div`
   margin-right: 12px;
   width: 350px;
-  .div {
-    flex-direction: column;
-  }
+
   .message {
     font-size: 13px;
     margin-top: -4px;
@@ -370,7 +524,8 @@ const StLine = styled.div`
 `;
 //주소검색 돋보기 이미지
 const Img = styled.img`
-  margin-top: 3px;
+  position: relative;
+  top: 4px;
 `;
 
 //가입하기 보라색 버튼
@@ -389,10 +544,14 @@ const StButton = styled.button`
 `;
 //문장 세로 정렬
 const StVertical = styled.div`
+  display: flex;
   flex-direction: column;
 `;
 //문장 가로 정렬
 const StHorizontal = styled.div`
+  display: flex;
   flex-direction: row;
   text-align: justify;
+  justify-content: space-between;
+  width: 100%;
 `;
