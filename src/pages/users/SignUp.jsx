@@ -9,7 +9,10 @@ import { Postcode } from "react-daum-postcode/lib/loadPostcode";
 import PopupDom from "./PopupDom";
 import PopupPostCode from "./PopupPostCode";
 import "../css/signup.css";
+
 const SignUp = () => {
+  const checkBoxUrl =
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K";
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -113,7 +116,8 @@ const SignUp = () => {
     }
   };
 
-  //주소검색
+  //주소 선언
+  const [address, setAddress] = useState("");
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -126,7 +130,25 @@ const SignUp = () => {
   const closePostCode = () => {
     setIsPopupOpen(false);
   };
-  const [address, setAddress] = useState("");
+  // 상세주소 선언
+  const [detailAddress, setDetailAddress] = useState("");
+  const onChangeDetailAddress = (e) => {
+    setDetailAddress(e.target.value);
+  };
+  //생년월일 선언
+  const [year, setYear] = useState();
+  const [month, setMonth] = useState();
+  const [date, setDate] = useState();
+
+  const onChangeYear = (e) => {
+    setYear(e.target.value);
+  };
+  const onChangeMonth = (e) => {
+    setMonth(e.target.value);
+  };
+  const onChangeDate = (e) => {
+    setDate(e.target.value);
+  };
 
   //회원정보
   const account = {
@@ -136,9 +158,9 @@ const SignUp = () => {
     name: name,
     email: email,
     phoneNum: phoneNum,
-    address: "",
-    detailaddress: "",
-    birthday: "",
+    address: address,
+    detailaddress: detailAddress,
+    birthday: year + month + date, //어떻게 보내줘야할지 확인 필요함
   };
 
   //가입하기 클릭 함수
@@ -271,6 +293,10 @@ const SignUp = () => {
               </span>
             </Button>
             <StInput value={address} />
+            <StInput
+              onChange={onChangeDetailAddress}
+              placeholder="나머지 주소를 입력해주세요"
+            />
             <div id="popupDom">
               {isPopupOpen && (
                 <PopupDom>
@@ -286,27 +312,41 @@ const SignUp = () => {
         </StRow>
         <StRow>
           <StLabel>성별</StLabel>
-          <StRadio type="radio" name="gender" value="male" />
-          <span>남자</span>
-          <StRadio type="radio" name="gender" value="female" />
-          <span>여자</span>
-          <StRadio type="radio" name="gender" value="none" />
-          <span>선택안함</span>
+          <StBetween>
+            <StRadio type="radio" name="gender" value="male" />
+            <span style={{ verticalAlign: "middle" }}>남자</span>
+            <StRadio type="radio" name="gender" value="female" />
+            <span style={{ verticalAlign: "middle" }}>여자</span>
+            <StRadio type="radio" name="gender" value="none" />
+            <span style={{ verticalAlign: "middle" }}>선택안함</span>
+          </StBetween>
         </StRow>
         <StRow>
           <StLabel>생년월일</StLabel>
           <StFormbox>
             <StDate>
               <div>
-                <StDateInput placeholder="YYYY" />
+                <StDateInput
+                  onChange={onChangeYear}
+                  type="text"
+                  placeholder="YYYY"
+                />
               </div>
               <span>/</span>
               <div>
-                <StDateInput placeholder="MM" />
+                <StDateInput
+                  onChange={onChangeMonth}
+                  type="text"
+                  placeholder="MM"
+                />
               </div>
               <span>/</span>
               <div>
-                <StDateInput placeholder="DD" />
+                <StDateInput
+                  onChange={onChangeDate}
+                  type="text"
+                  placeholder="DD"
+                />
               </div>
             </StDate>
           </StFormbox>
@@ -314,12 +354,12 @@ const SignUp = () => {
         <StRow>
           <StLabel style={{ height: "139px" }}>추가입력 사항</StLabel>
           <div>
-            <div>
+            <StBetween style={{ width: "95%" }}>
               <StRadio type="radio" name="addtion" />
               <span>친구초대 추천인 아이디</span>
               <StRadio type="radio" name="addtion" />
               <span>참여 이벤트명</span>{" "}
-            </div>
+            </StBetween>
             <StFormbox>
               <StInput placeholder="추천인 아이디를 입력해주세요." />
               <p>
@@ -339,60 +379,80 @@ const SignUp = () => {
           </StColumn>
           <StColumn>
             <StRow>
-              <StVertical>
+              <label>
                 <StCheckbox type="checkbox" />
-                <div style={{ display: "flex" }}>
-                  <img
-                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K"
-                    alt=""
-                  ></img>
-                  <span>전체 동의합니다.</span>
-                </div>
+                <img src={checkBoxUrl} alt="전체동의체크" />
+                <span>전체 동의합니다.</span>
+              </label>
 
-                <p>
-                  선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
-                  이용할 수 있습니다.
-                </p>
-              </StVertical>
+              <p>
+                선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
+                이용할 수 있습니다.
+              </p>
             </StRow>
             <StRow>
-              <StCheckbox type="checkbox" />
               <StHorizontal>
                 <div>
-                  이용약관 동의 <span>(필수)</span>
+                  <label>
+                    <StCheckbox type="checkbox" />
+                    <img src={checkBoxUrl} alt="이용약관 동의" />
+                    이용약관 동의 <span>(필수)</span>
+                  </label>
                 </div>
 
                 <div>약관보기 〉</div>
               </StHorizontal>
             </StRow>
             <StRow>
-              <StCheckbox type="checkbox" />
               <StHorizontal>
                 <div>
-                  개인정보 수집∙이용 동의 <span>(필수)</span>
+                  <label>
+                    <StCheckbox type="checkbox" />
+                    <img
+                      src={checkBoxUrl}
+                      alt="개인정보 수집∙이용 동의(필수)"
+                    />
+                    개인정보 수집∙이용 동의 <span>(필수)</span>
+                  </label>
                 </div>
+
                 <div>약관보기 〉</div>
               </StHorizontal>
             </StRow>
             <StRow>
-              <StCheckbox type="checkbox" />
               <StHorizontal>
                 <div>
-                  개인정보 수집∙이용 동의 <span>(선택)</span>
+                  <label>
+                    <StCheckbox type="checkbox" />
+                    <img
+                      src={checkBoxUrl}
+                      alt="개인정보 수집∙이용 동의(선택)"
+                    />
+                    개인정보 수집∙이용 동의 <span>(선택)</span>
+                  </label>
                 </div>
+
                 <div>약관보기 〉</div>
               </StHorizontal>
             </StRow>
             <StRow>
-              <StCheckbox type="checkbox" />
-              <div>
+              <label>
+                <StCheckbox type="checkbox" />
+                <img
+                  src={checkBoxUrl}
+                  alt="무료배송, 할인쿠폰 등 헤택/정보 수신 동의(선택)"
+                />
                 무료배송, 할인쿠폰 등 헤택/정보 수신 동의 <span>(선택)</span>
-              </div>
+              </label>
             </StRow>
             <StRow>
               <StCheckbox type="checkbox" />
+              <img src={checkBoxUrl} alt="SMS" />
+
               <span>SMS</span>
               <StCheckbox type="checkbox" />
+              <img src={checkBoxUrl} alt="이메일" />
+
               <span>이메일</span>
             </StRow>
             <p>
@@ -400,10 +460,11 @@ const SignUp = () => {
             </p>
 
             <StRow>
-              <StCheckbox type="checkbox" />
-              <div>
+              <label>
+                <StCheckbox type="checkbox" />
+                <img src={checkBoxUrl} alt="본인은 만 14세 이상입니다." />
                 본인은 만 14세 이상입니다.<span>(필수)</span>
-              </div>
+              </label>
             </StRow>
           </StColumn>
         </Lower>
@@ -431,7 +492,7 @@ const StTitle = styled.h2`
 `;
 //항목 전체 박스
 const StRow = styled.div`
-  display: inline-flex;
+  display: flex;
   padding: 10px 20px;
 
   width: 100%;
@@ -485,11 +546,27 @@ const Span = styled.span`
 `;
 //셩별, 추가입력사항
 const StRadio = styled.input`
-  color: #8b00ff;
+  appearance: none;
+  vertical-align: middle;
+  border: max(2px, 0.1em) solid gray;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  :checked {
+    border: 0.6em solid rgb(95, 0, 128);
+  }
 `;
 //이용약관 동의 체크박스
 const StCheckbox = styled.input`
   appearance: none;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0px, 0px, 0px, 0px);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
 `;
 //약관동의 부분
 const Lower = styled.div`
@@ -538,16 +615,21 @@ const StButton = styled.button`
   cursor: pointer;
   margin-bottom: 20px;
 `;
-//문장 세로 정렬
-const StVertical = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-//문장 가로 정렬
+
 const StHorizontal = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+  width: 100%;
+`;
+const StBetween = styled.div`
+  font-size: 16px;
+  line-height: 2rem;
+  padding: 0.2em 0.4em;
   display: flex;
   flex-direction: row;
   text-align: justify;
   justify-content: space-between;
-  width: 100%;
+  width: 50%;
 `;
