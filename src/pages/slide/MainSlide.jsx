@@ -44,7 +44,7 @@ export default class MainSlider extends React.Component {
       infinite: true,
       autoplay: true,
       autoplaySpeed: 5000,
-      speed: 1000,
+      //   speed: 1000,
       slidesToShow: 1,
       slidesToScroll: 1,
       dots: false,
