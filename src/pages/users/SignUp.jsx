@@ -126,12 +126,7 @@ const SignUp = () => {
   const closePostCode = () => {
     setIsPopupOpen(false);
   };
-  const [address, setAddress] = useState(false);
-
-  const parentFunction = (child) => {
-    setAddress(child);
-    console.log(address);
-  };
+  const [address, setAddress] = useState("");
 
   //회원정보
   const account = {
@@ -275,12 +270,13 @@ const SignUp = () => {
                 주소검색
               </span>
             </Button>
+            <StInput value={address} />
             <div id="popupDom">
               {isPopupOpen && (
                 <PopupDom>
                   <PopupPostCode
                     onClose={closePostCode}
-                    parentFunction={parentFunction}
+                    setAddress={setAddress}
                   />
                 </PopupDom>
               )}

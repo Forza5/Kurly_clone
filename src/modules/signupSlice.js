@@ -10,12 +10,13 @@ const signupSlice = createSlice({
   initialState,
   reducers: {
     addAddress: (state, action) => {
+      console.log(action.payload);
       state.address += action.payload;
     },
 
-    AddDetailAddress: (state, action) => {
-      state.address += action.payload;
-    },
+    // AddDetailAddress: (state, action) => {
+    //   state.address += action.payload;
+    // },
   },
 });
 
