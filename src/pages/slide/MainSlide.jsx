@@ -63,8 +63,8 @@ export default class MainSlider extends React.Component {
       <StyleSlider {...settings}>
         {mainItem.map((item) => {
           return (
-            <Link to="/">
-              <div key={item.id}>
+            <Link to="/" key={item.id}>
+              <div>
                 <Images src={item.url} alt="슬라이드 이미지" />
               </div>
             </Link>
