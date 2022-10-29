@@ -6,6 +6,7 @@ import SignUp from "../pages/users/SignUp";
 import Login from "../pages/users/Login";
 import Header from "../common/Header";
 import Cart from "../pages/cart/Cart";
+import MainSlider from "../pages/slide/MainSlide";
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/header" element={<Header />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/mainslider" element={<MainSlider />} />
       </Routes>
     </BrowserRouter>
   );

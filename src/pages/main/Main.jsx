@@ -17,6 +17,9 @@ const Main = () => {
       <button type="button" onClick={() => navigate("/cart")}>
         장바구니
       </button>
+      <button type="button" onClick={() => navigate("/mainslider")}>
+        슬라이드
+      </button>
     </div>
   );
 };
