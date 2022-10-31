@@ -7,7 +7,8 @@ import Login from "../pages/users/Login";
 import Header from "../common/Header";
 import Cart from "../pages/cart/Cart";
 import MainSlider from "../pages/slide/MainSlide";
-
+import PostCard from "../common/PostCard";
+import ModalBasic from "../common/ModalBasic";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -21,6 +22,8 @@ const Router = () => {
         <Route path="/header" element={<Header />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/mainslider" element={<MainSlider />} />
+        <Route path="/postcard" element={<PostCard />} />
+        <Route path="/modalbasic" element={<ModalBasic />} />
       </Routes>
     </BrowserRouter>
   );

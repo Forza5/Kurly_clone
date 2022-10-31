@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { useDispatch } from "react-redux";
-import addAddress from "../../modules/signupSlice";
 
 const PopupPostCode = ({ onClose, setAddress }) => {
   // const address = props.address

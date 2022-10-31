@@ -5,27 +5,76 @@ const Main = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <button type="button" onClick={() => navigate("/footer")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/footer")}
+      >
         footer이동
       </button>
-      <button type="button" onClick={() => navigate("/signup")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/signup")}
+      >
         회원가입 이동
       </button>
-      <button type="button" onClick={() => navigate("/login")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/login")}
+      >
         로그인 이동
       </button>
-      <button type="button" onClick={() => navigate("/signup")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/signup")}
+      >
         이동2
       </button>
-      <button type="button" onClick={() => navigate("/header")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/header")}
+      >
         헤더
       </button>
-      <button type="button" onClick={() => navigate("/cart")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/cart")}
+      >
         장바구니
       </button>
-      <button type="button" onClick={() => navigate("/mainslider")}>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/mainslider")}
+      >
         슬라이드
       </button>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/cart")}
+      >
+        장바구니
+      </button>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/postcard")}
+      >
+        포스트카드
+      </button>
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/modalbasic")}
+      >
+        모달베이직
+      </button>{" "}
     </div>
   );
 };
