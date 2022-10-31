@@ -1,21 +1,50 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../common/Button";
+import { AcyncLoginMember } from "../../modules/membersSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [account, setAccount] = useState({
+    id: "",
+    password: "",
+  });
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setAccount({ ...account, [name]: value });
+  };
+
+  const onLoginHandler = () => {
+    console.log("로그인핸들러");
+    dispatch(AcyncLoginMember(account));
+  };
   return (
     <LgContainer>
       <StLgTitle>로그인</StLgTitle>
       <StLgForm>
-        <StLgInput type="text" placeholder="아이디를 입력해주세요" />
-        <StLgInput type="password" placeholder="비밀번호를 입력해주세요" />
+        <StLgInput
+          type="text"
+          name="id"
+          onChange={onChange}
+          placeholder="아이디를 입력해주세요"
+        />
+        <StLgInput
+          type="password"
+          name="password"
+          onChange={onChange}
+          placeholder="비밀번호를 입력해주세요"
+        />
         <StLgFind>
           <div>아이디찾기</div>
           <span>|</span>
           <div>비밀번호 찾기</div>
         </StLgFind>
-        <StButton>로그인</StButton>
+        <StButton onClick={onLoginHandler}>로그인</StButton>
         <Button width="100%" height="54px" onClick={() => navigate(`/signup`)}>
           회원가입
         </Button>

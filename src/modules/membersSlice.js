@@ -10,11 +10,10 @@ const initialState = {
 export const AcyncLoginMember = createAsyncThunk(
   "members/loginMember",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const data = await membersApi.loginMember(payload);
       console.log("login data", data);
-      localStorage.setItem("token", data.data.data.token);
+      localStorage.setItem("token", data.data.accessToken);
       // sessionStorage.setItem("token", data.data.data.token);
       return payload;
     } catch (error) {
@@ -29,7 +28,7 @@ export const AcyncCreateMember = createAsyncThunk(
     try {
       console.log("create", payload);
       const data = await membersApi.creatMember(payload);
-      console.log(data);
+      console.log(data.data.message);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -105,12 +104,12 @@ const membersSlice = createSlice({
     //회원가입
     [AcyncCreateMember.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      alert("회원가입을 축하드립니다");
+      alert(payload.message);
     },
     [AcyncCreateMember.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-      console.log(state.err.response.data);
+      console.log(state.error.response.data);
       alert("다시 입력해주세요");
     },
     //회원삭제

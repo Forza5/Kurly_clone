@@ -75,6 +75,13 @@ const Main = () => {
       >
         모달베이직
       </button>{" "}
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/detail")}
+      >
+        디테일페이지
+      </button>{" "}
     </div>
   );
 };

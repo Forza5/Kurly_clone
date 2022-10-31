@@ -3,10 +3,7 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 export const instance = axios.create({
-  baseURL:
-    // `http://13.125.143.92:3000`,
-    `http://13.209.80.213:3000`,
-  // `https://www.spartaseosu.shop`,
+  baseURL: `https://www.cheolsu.shop/`,
 });
 // const user = useSelector((state) => state.members.members.id);
 // console.log("user", user);
@@ -41,25 +38,40 @@ export const commentsApi = {
     }),
 };
 
-export const postsApi = {
+export const goodsApi = {
   //각각의 get,post,delete,patch입니다!
-  getPosts: () => {
-    return instance.get(`/posts`);
+  getGoods: () => {
+    return instance.get(`/goods`);
   },
 
-  creatPost: (inputs) => {
-    console.log(inputs);
-    return instance.post(`/posts`, inputs, {
+  getOneGood: (goodsId) => {
+    return instance.get(`/goods/${goodsId}`);
+  },
+};
+
+export const cartApi = {
+  //각각의 get,post,delete,patch입니다!
+  getCart: () => {
+    return instance.get(`/cart`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
 
-  deletePost: (params) =>
-    instance.delete(`/posts/${params}`, {
+  postCart: (inputs) => {
+    return instance.post(`/cart`, inputs, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  putcart: (payload) =>
+    instance.put(`/cart/${payload.postId}`, payload.post, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  updatePost: (payload) =>
-    instance.patch(`/posts/${payload.postId}`, payload.post, {
+  deleteCart: (params) =>
+    instance.delete(`/cart/${params}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  deleteAllCart: (params) =>
+    instance.delete(`/cart/all`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };

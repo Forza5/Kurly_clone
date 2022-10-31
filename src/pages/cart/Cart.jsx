@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../css/reset.css";
 import "../css/font.css";
+import { useDispatch, useSelector } from "react-redux";
+import { AcyncGetCart } from "../../modules/cartSlice";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+  const [carts, setCarts] = useState(false);
+  const [number, setNumber] = useState(1);
+
+  const onDecrease = () => {
+    setNumber((prevNumber) => (prevNumber <= 1 ? 1 : prevNumber - 1));
+  };
+  const onIncrease = () => {
+    setNumber((prevNumber) => prevNumber + 1);
+  };
+
+  const productData = useSelector((state) => state.goods.data);
+  console.log(productData);
+
+  useEffect(() => {
+    dispatch(AcyncGetCart());
+  }, []);
+
   return (
     <div
       style={{
@@ -110,18 +130,50 @@ const Cart = () => {
                 borderBottom: "1px solid rgb(244,244,244)",
               }}
             >
-              <p
-                style={{
-                  padding: "115px 0px",
-                  borderTop: "1px solid rgb(51,51,51)",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  textAlign: "center",
-                  color: "rgb(181,181,181)",
-                }}
-              >
-                장바구니에 담긴 상품이 없습니다
-              </p>
+              {productData.length > 0 ? (
+                productData.map((item) => {
+                  return (
+                    <ul key={item.goodsId}>
+                      <GoodsList>
+                        <GoodsLabel />
+                        <GoodsInput />
+                        <GoodsImg src={item.goodsImage} />
+                        <span></span>
+
+                        <GoodsName>
+                          <ATitle>
+                            <PTitle>{item.goodsName}</PTitle>
+                          </ATitle>
+                        </GoodsName>
+                        <Counter>
+                          <CounterDown onClick={onDecrease}></CounterDown>
+                          <Num>{number}</Num>
+                          <CounterUp onClick={onIncrease}></CounterUp>
+                        </Counter>
+                        <Price>
+                          <PriceSpan>{item.goodsPrice * number}원</PriceSpan>
+                        </Price>
+                        <DeleteButton>
+                          <DeleteSpan></DeleteSpan>
+                        </DeleteButton>
+                      </GoodsList>
+                    </ul>
+                  );
+                })
+              ) : (
+                <p
+                  style={{
+                    padding: "115px 0px",
+                    borderTop: "1px solid rgb(51,51,51)",
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    textAlign: "center",
+                    color: "rgb(181,181,181)",
+                  }}
+                >
+                  장바구니에 담긴 상품이 없습니다
+                </p>
+              )}
             </div>
           </div>
           <div
@@ -235,7 +287,7 @@ const Cart = () => {
                   fontWeight: "500",
                   lineHeight: "20px",
                   background:
-                    "url(https://res.kurly.com/pc/service/cart/2007/ico_location.svg) 0px 50% / 20px 20px no-repeat;",
+                    "url(https://res.kurly.com/pc/service/cart/2007/ico_location.svg) 0px 50% / 20px 20px no-repeat",
                 }}
               >
                 배송지
@@ -528,3 +580,135 @@ const Cart = () => {
 };
 
 export default Cart;
+
+const GoodsList = styled.li`
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  position: relative;
+  padding: 20px 0px;
+`;
+const GoodsLabel = styled.label`
+  margin-left: 2px;
+`;
+
+const GoodsInput = styled.input`
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0px, 0px, 0px, 0px);
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+`;
+
+const GoodsImg = styled.img`
+  display: inline-block;
+  width: 60px;
+  height: 78px;
+  margin-right: 12px;
+`;
+
+const GoodsName = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 345px;
+  margin-right: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+`;
+
+const ATitle = styled.a`
+  cursor: pointer;
+`;
+
+const PTitle = styled.p`
+  max-height: 54px;
+  padding-top: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+const Counter = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  border: 1px solid rgb(221, 223, 225);
+  width: 88px;
+  border-radius: 3px;
+`;
+
+const CounterDown = styled.button`
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  border: none;
+  font-size: 1px;
+  color: transparent;
+  background-size: cover;
+  background-color: transparent;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yMCAxNHYySDEwdi0yeiIgZmlsbD0iIzMzMyIgZmlsbC1ydWxlPSJub256ZXJvIi8+Cjwvc3ZnPgo=);
+  vertical-align: top;
+`;
+const Num = styled.div`
+  font-weight: 400;
+  color: rgb(51, 51, 51);
+  display: inline-flex;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-size: 14px;
+  text-align: center;
+  width: 31px;
+  height: 28px;
+  line-height: 28px;
+`;
+
+const CounterUp = styled.button`
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  border: none;
+  font-size: 1px;
+  color: transparent;
+  background-size: cover;
+  background-color: transparent;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xNiAxMHY0aDR2MmgtNHY0aC0ydi00aC00di0yaDR2LTRoMnoiIGZpbGw9IiMzMzMiIGZpbGwtcnVsZT0ibm9uemVybyIvPgo8L3N2Zz4K);
+  vertical-align: top;
+`;
+const Price = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 127px;
+  text-align: right;
+  word-break: break-all;
+`;
+const PriceSpan = styled.span`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(51, 51, 51);
+`;
+
+const DeleteButton = styled.button`
+  width: 30px;
+  height: 30px;
+  margin-left: 9px;
+`;
+
+const DeleteSpan = styled.span`
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yMSA5Ljc2MiAyMC4yMzggOSAxNSAxNC4yMzggOS43NjIgOSA5IDkuNzYyIDE0LjIzOCAxNSA5IDIwLjIzOGwuNzYyLjc2MkwxNSAxNS43NjIgMjAuMjM4IDIxbC43NjItLjc2MkwxNS43NjIgMTV6IiBmaWxsPSIjQ0NDIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz4KPC9zdmc+Cg==);
+  background-size: cover;
+  background-position: center center;
+`;

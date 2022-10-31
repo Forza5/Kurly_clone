@@ -1,4 +1,4 @@
-import postSlice from "../modules/postSlice";
+import goodsSlice from "../modules/goodsSlice";
 import styled from "styled-components";
 import CartButton from "./CartButton";
 const postCard = () => {

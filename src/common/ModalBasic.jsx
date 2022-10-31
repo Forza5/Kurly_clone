@@ -2,11 +2,38 @@ import styles from "../pages/css/ModalBasic.css";
 import { useEffect } from "react";
 import { useRef } from "react";
 import "../pages/css/ModalBasic.css";
+import { useDispatch, useSelector } from "react-redux";
+import { AcyncPostCart } from "../modules/cartSlice";
+import jwt_decode from "jwt-decode";
+import { AcyncGetOneGood } from "../modules/goodsSlice";
 
 function ModalBasic({ setModalOpen }) {
+  const token = localStorage.getItem("token");
+  const realToken = jwt_decode(token);
+  console.log(realToken);
+
+  const dispatch = useDispatch();
   // 모달 끄기
   const closeModal = () => {
     setModalOpen(false);
+  };
+  useEffect(() => {
+    dispatch(AcyncGetOneGood());
+  });
+
+  const [productData] = useSelector((state) => state.goods.data);
+  console.log(productData);
+
+  const myPick = {
+    userId: realToken.id,
+    productId: productData.goodsId,
+    quantity: 1,
+    price: productData.goodsPrice,
+    productName: productData.goodsName,
+  };
+
+  const onPostCart = () => {
+    dispatch(AcyncPostCart(myPick));
   };
 
   return (
@@ -17,13 +44,11 @@ function ModalBasic({ setModalOpen }) {
             <div>
               <div className="informations">
                 <div className="productName">
-                  <span className="name">
-                    [ardo] 유기농 컬리플라워 600g (냉동)
-                  </span>
+                  <span className="name">{productData.goodsName}</span>
                 </div>
                 <div className="priceInformations">
                   <div>
-                    <span className="price">5,990원</span>
+                    <span className="price">{productData.goodsPrice}</span>
                   </div>
                   <div className="controlQuantity">
                     <button
@@ -47,7 +72,9 @@ function ModalBasic({ setModalOpen }) {
                   <p className="sumP">합계</p>
 
                   <div>
-                    <span className="sumSpan">5,990</span>
+                    <span className="sumSpan">
+                      {productData.goodsPrice * 1}
+                    </span>
                     <span className="sumSpan2">원</span>
                   </div>
                 </div>
@@ -64,7 +91,9 @@ function ModalBasic({ setModalOpen }) {
                 <span className="candelSpan">취소</span>
               </button>
               <button className="addCartButton">
-                <span className="addCartSpan">장바구니 담기</span>
+                <span onClick={onPostCart} className="addCartSpan">
+                  장바구니 담기
+                </span>
               </button>
             </div>
           </div>
