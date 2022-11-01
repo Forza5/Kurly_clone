@@ -12,6 +12,254 @@ const Header = () => {
   const navigate = useNavigate();
   const [displays, setDisplays] = useState({ display: "none" });
   const [maps, setMaps] = useState({ display: "none" });
+  const [selected, setSelected] = useState("");
+
+  //메인리스트
+  const main1 = "선물하기";
+  const main2 = "채소";
+  const main3 = "과일・견과・쌀";
+  const main4 = "수산・해산・건어물";
+  const main5 = "정육・계란";
+  const main6 = "국・반찬・메인요리";
+  const main7 = "샐러드・간편식";
+  const main8 = "면・양념・오일";
+  const main9 = "생수・음료・우유・커피";
+  const main10 = "간식・과자・떡";
+  const main11 = "베이커리・치즈・델리";
+  const main12 = "건강식품";
+  const main13 = "와인";
+  const main14 = "전통주";
+  const main15 = "생활용품・리빙・캠핑";
+  const main16 = "스킨케어・메이크업";
+  const main17 = "헤어・바디・구강";
+  const main18 = "주방용품";
+  const main19 = "가전제품";
+  const main20 = "반려동물";
+  const main21 = "베이비・키즈・완구";
+
+  //서브리스트
+
+  const sub1 = [
+    "홍삼・즙",
+    "건강식품",
+    "과일・수산・정육",
+    "베이커리・커피・차",
+    "간편식・오일・캔류",
+    "뷰티・향수・꽃",
+    "리빙・생활・유아동",
+  ];
+
+  const sub2 = [
+    "친환경",
+    "고구마・감자・당근",
+    "시금치・쌈채소・나물",
+    "브로콜리・파프리카・양배추",
+    "양파・대파・마늘・배추",
+    "오이・호박・고추",
+    "냉동・이색・간편채소",
+    "콩나물・버섯",
+  ];
+
+  const sub3 = [
+    "친환경",
+    "제철과일",
+    "국산과일",
+    "수입과일",
+    "간편과일",
+    "냉동・건과일",
+    "견과류",
+    "쌀・잡곡",
+  ];
+
+  const sub4 = [
+    "제철수산",
+    "생선류",
+    "굴비・반건류",
+    "오징어・낙지・문어",
+    "새우・게・랍스터",
+    "해산물・조개류",
+    "수산가공품",
+    "김・미역・해조류",
+    "건어물・다시팩",
+  ];
+
+  const sub5 = [
+    "국내산 소고기",
+    "수입산 소고기",
+    "돼지고기",
+    "계란류",
+    "닭・오리고기",
+    "양념육・돈까스",
+    "양고기",
+  ];
+
+  const sub6 = [
+    "국・탕・찌개",
+    "밀키트・메인요리",
+    "밑반찬",
+    "김치・젓갈・장류",
+    "두부・어묵・부침개",
+    "베이컨・햄・통조림",
+  ];
+
+  const sub7 = [
+    "샐러드・닭가슴살",
+    "도시락・밥류",
+    "파스타・면류",
+    "떡볶이・튀김・순대",
+    "피자・핫도그・만두",
+    "폭립・떡갈비・안주",
+    "죽・스프・카레",
+    "선식・시리얼",
+  ];
+
+  const sub8 = [
+    "파스타・면류",
+    "식초・소스・드레싱",
+    "양념・액젓・장류",
+    "식용유・참기름・오일",
+    "소금・설탕・향신료",
+    "밀가루・가루・믹스",
+  ];
+
+  const sub9 = [
+    "생수・탄산수",
+    "음료・주스",
+    "우유・두유・요거트",
+    "커피",
+    "차",
+  ];
+
+  const sub10 = [
+    "과자・스낵・쿠키",
+    "초콜릿・젤리・캔디",
+    "떡・한과",
+    "아이스크림",
+  ];
+
+  const sub11 = [
+    "식빵・빵류",
+    "잼・버터・스프레드",
+    "케이크・파이・디저트",
+    "치즈",
+    "델리",
+    "올리브・피클",
+  ];
+
+  const sub12 = [
+    "영양제",
+    "유산균",
+    "홍삼・인삼・꿀",
+    "건강즙・건강음료",
+    "건강분말・건강환",
+    "다이어트・이너뷰티",
+    "유아동",
+  ];
+
+  const sub13 = ["레드와인", "화이트와인", "샴페인・스파클링"];
+
+  const sub14 = ["막걸리・탁주", "증류주・약주・청주", "과실주・리큐르"];
+
+  const sub15 = [
+    "휴지・티슈",
+    "여성・위생용품",
+    "세제・청소용품",
+    "화훼・인테리어소품",
+    "의약외품・마스크",
+    "생활잡화・문구",
+    "캠핑용품",
+  ];
+
+  const sub16 = [
+    "스킨・미스트・패드",
+    "에센스・앰플・로션",
+    "크림・오일",
+    "클렌징",
+    "마스크팩",
+    "선케어",
+    "메이크업",
+    "맨즈케어",
+    "뷰티소품・기기",
+  ];
+
+  const sub17 = [
+    "구강・면도",
+    "샴푸・컨디셔너",
+    "트리트먼트・팩",
+    "헤어에센스・염모",
+    "바디워시・스크럽",
+    "바디로션・크림",
+    "핸드・립・데오",
+    "향수・디퓨저",
+    "헤어・바디소품",
+  ];
+
+  const sub18 = [
+    "주방소모품・잡화",
+    "주방・조리도구",
+    "냄비・팬・솥",
+    "보관용기・텀블러",
+    "식기・테이블웨어",
+    "컵・잔・커피도구",
+  ];
+
+  const sub19 = [
+    "주방가전",
+    "생활가전",
+    "계절가전",
+    "디지털・PC",
+    "대형・설치가전",
+  ];
+
+  const sub20 = [
+    "강아지 간식",
+    "강아지 주식",
+    "고양이 간식",
+    "고양이 주식",
+    "건강관리",
+    "배변・위생",
+    "장난감",
+    "미용・외출・하우스",
+  ];
+
+  const sub21 = [
+    "분유・간편이유식",
+    "이유식 재료",
+    "간식・음식",
+    "건강식품",
+    "이유・수유용품",
+    "기저귀・물티슈",
+    "세제・위생용품",
+    "스킨・구강케어",
+    "완구・잡화류",
+  ];
+
+  //메인카테고리
+  const main = [
+    { id: 0, mains: main1, sub: sub1 },
+    { id: 1, mains: main2, sub: sub2 },
+    { id: 2, mains: main3, sub: sub3 },
+    { id: 3, mains: main4, sub: sub4 },
+    { id: 4, mains: main5, sub: sub5 },
+    { id: 5, mains: main6, sub: sub6 },
+    { id: 6, mains: main7, sub: sub7 },
+    { id: 7, mains: main8, sub: sub8 },
+    { id: 8, mains: main9, sub: sub9 },
+    { id: 9, mains: main10, sub: sub10 },
+    { id: 10, mains: main11, sub: sub11 },
+    { id: 11, mains: main12, sub: sub12 },
+    { id: 12, mains: main13, sub: sub13 },
+    { id: 13, mains: main14, sub: sub14 },
+    { id: 14, mains: main15, sub: sub15 },
+    { id: 15, mains: main16, sub: sub16 },
+    { id: 16, mains: main17, sub: sub17 },
+    { id: 17, mains: main18, sub: sub18 },
+    { id: 18, mains: main19, sub: sub19 },
+    { id: 19, mains: main20, sub: sub20 },
+    { id: 20, mains: main21, sub: sub21 },
+  ];
+
+  console.log(main);
 
   return (
     <AllHead>
@@ -88,7 +336,7 @@ const Header = () => {
         <div style={{ marginTop: "20px" }}>
           <LogoFlex>
             <InnerLogo>
-              <H1Height>
+              <H1Height onClick={() => navigate("/")}>
                 <img src={logo} alt="메인로고"></img>
               </H1Height>
               <UlStyle>
@@ -165,14 +413,16 @@ const Header = () => {
         <div style={{ padding: "15px 0" }}>
           <div>
             <ThirdFlex>
-              <CateDiv>
-                <div>
-                  <SpanSide></SpanSide>
-                  <SpanSide></SpanSide>
-                  <SpanSide></SpanSide>
-                </div>
-                <CateTitle>카테고리</CateTitle>
-              </CateDiv>
+              <div>
+                <CateDiv>
+                  <div>
+                    <SpanSide></SpanSide>
+                    <SpanSide></SpanSide>
+                    <SpanSide></SpanSide>
+                  </div>
+                  <CateTitle>카테고리</CateTitle>
+                </CateDiv>
+              </div>
               <MainCate>
                 <li>
                   <Link
@@ -217,6 +467,26 @@ const Header = () => {
                 </Deliever>
               </div>
             </ThirdFlex>
+            <FormSub>
+              <ul>
+                {/* eslint-disable-next-line array-callback-return */}
+                {main.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      <p>
+                        <span></span>
+                        {item.mains}
+                      </p>
+                      <ul className="depth">
+                        <li>
+                          <p>{item.sub}</p>
+                        </li>
+                      </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </FormSub>
           </div>
         </div>
       </div>
@@ -464,3 +734,5 @@ const Deliever = styled.a`
   line-height: 15px;
   box-sizing: border-box;
 `;
+
+const FormSub = styled.form``;
