@@ -410,7 +410,7 @@ const Header = () => {
             </div>
           </LogoFlex>
         </div>
-        <div style={{ padding: "15px 0" }}>
+        <div>
           <div>
             <ThirdFlex>
               <div>
@@ -420,7 +420,29 @@ const Header = () => {
                     <SpanSide></SpanSide>
                     <SpanSide></SpanSide>
                   </div>
-                  <CateTitle>카테고리</CateTitle>
+                  <CateTitle className="hov">카테고리</CateTitle>
+                  <div>
+                    <SubCate className="wback">
+                      {/* eslint-disable-next-line array-callback-return */}
+                      {main.map((item) => {
+                        return (
+                          <InnerCate key={item.id}>
+                            <span></span>
+                            <MainCateP>{item.mains}</MainCateP>
+                          </InnerCate>
+                        );
+                      })}
+                    </SubCate>
+                    <SubInnerCate className="depth">
+                      {main.map((items) => {
+                        return (
+                          <li key={items.id}>
+                            <p>{items.sub}</p>
+                          </li>
+                        );
+                      })}
+                    </SubInnerCate>
+                  </div>
                 </CateDiv>
               </div>
               <MainCate>
@@ -467,26 +489,6 @@ const Header = () => {
                 </Deliever>
               </div>
             </ThirdFlex>
-            <FormSub>
-              <ul>
-                {/* eslint-disable-next-line array-callback-return */}
-                {main.map((item) => {
-                  return (
-                    <li key={item.id}>
-                      <p>
-                        <span></span>
-                        {item.mains}
-                      </p>
-                      <ul className="depth">
-                        <li>
-                          <p>{item.sub}</p>
-                        </li>
-                      </ul>
-                    </li>
-                  );
-                })}
-              </ul>
-            </FormSub>
           </div>
         </div>
       </div>
@@ -692,6 +694,18 @@ const CateDiv = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  padding: 15px 0;
+  &:hover > div span {
+    background: rgb(95, 0, 128);
+    color: rgb(95, 0, 128);
+  }
+  &:hover p.hov {
+    color: rgb(95, 0, 128);
+  }
+  &:hover ul.wback {
+    display: block;
+  }
 `;
 
 const SpanSide = styled.span`
@@ -735,4 +749,35 @@ const Deliever = styled.a`
   box-sizing: border-box;
 `;
 
-const FormSub = styled.form``;
+const SubCate = styled.ul`
+  position: absolute;
+  left: 0;
+  top: 54px;
+  width: 247px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #eee;
+  overflow-y: auto;
+  display: none;
+  max-height: calc(-55px + 90.5vh);
+  min-height: 200px;
+`;
+
+const InnerCate = styled.li`
+  padding: 7px 0 9px 14px;
+`;
+
+const MainCateP = styled.p`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  padding: 1px 20px 0 10px;
+`;
+
+const SubInnerCate = styled.ul`
+  position: absolute;
+  width: 266px;
+  background: #999;
+  top: 54px;
+  left: 247px;
+`;
