@@ -236,150 +236,150 @@ const Header = () => {
 
   //메인카테고리
   const main = [
-    { id: 0, mains: main1, sub: sub1 },
-    { id: 1, mains: main2, sub: sub2 },
-    { id: 2, mains: main3, sub: sub3 },
-    { id: 3, mains: main4, sub: sub4 },
-    { id: 4, mains: main5, sub: sub5 },
-    { id: 5, mains: main6, sub: sub6 },
-    { id: 6, mains: main7, sub: sub7 },
-    { id: 7, mains: main8, sub: sub8 },
-    { id: 8, mains: main9, sub: sub9 },
-    { id: 9, mains: main10, sub: sub10 },
-    { id: 10, mains: main11, sub: sub11 },
-    { id: 11, mains: main12, sub: sub12 },
-    { id: 12, mains: main13, sub: sub13 },
-    { id: 13, mains: main14, sub: sub14 },
-    { id: 14, mains: main15, sub: sub15 },
-    { id: 15, mains: main16, sub: sub16 },
-    { id: 16, mains: main17, sub: sub17 },
-    { id: 17, mains: main18, sub: sub18 },
-    { id: 18, mains: main19, sub: sub19 },
-    { id: 19, mains: main20, sub: sub20 },
-    { id: 20, mains: main21, sub: sub21 },
+    { id: 0, mains: main1 },
+    { id: 1, mains: main2 },
+    { id: 2, mains: main3 },
+    { id: 3, mains: main4 },
+    { id: 4, mains: main5 },
+    { id: 5, mains: main6 },
+    { id: 6, mains: main7 },
+    { id: 7, mains: main8 },
+    { id: 8, mains: main9 },
+    { id: 9, mains: main10 },
+    { id: 10, mains: main11 },
+    { id: 11, mains: main12 },
+    { id: 12, mains: main13 },
+    { id: 13, mains: main14 },
+    { id: 14, mains: main15 },
+    { id: 15, mains: main16 },
+    { id: 16, mains: main17 },
+    { id: 17, mains: main18 },
+    { id: 18, mains: main19 },
+    { id: 19, mains: main20 },
+    { id: 20, mains: main21 },
   ];
 
-  console.log(main);
+  window.addEventListener("scroll", () => {
+    let scroll = window.scrollY;
+    if (scroll > 0) {
+      document.getElementById("header").style.display = "none";
+      document.getElementById("headerbot").style.display = "block";
+    } else {
+      document.getElementById("header").style.display = "block";
+      document.getElementById("headerbot").style.display = "none";
+    }
+  });
 
   return (
-    <AllHead>
-      <div style={{ width: "1020px", margin: "0 auto" }}>
-        <RightFlex className="headTop">
-          <UlFlex>
-            <CustomDepLi className="af">
-              <BtnTop
-                style={{ color: "rgb(95, 0, 128)" }}
-                type="button"
-                onClick={() => {
-                  navigate("/signup");
-                }}
-              >
-                회원가입
-              </BtnTop>
-            </CustomDepLi>
-            <CustomDepLi className="af">
-              <BtnTop
-                type="button"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                로그인
-              </BtnTop>
-            </CustomDepLi>
-            <CustomDepLi style={{ position: "relative" }}>
-              <BtnTop
-                type="button"
-                onMouseOver={(e) => {
-                  setDisplays({ display: "block" });
-                }}
-                onMouseLeave={() => {
-                  setDisplays({ display: "none" });
-                }}
-              >
-                고객센터 <TiArrowSortedDown />
-              </BtnTop>
-              <CustomDepth
-                style={displays}
-                className="customDepth"
-                onMouseEnter={() => {
-                  setDisplays({ display: "block" });
-                }}
-                onMouseLeave={() => {
-                  setDisplays({ display: "none" });
-                }}
-              >
-                <LiSize>
-                  <Link to="/" style={{ display: "block", color: "#333" }}>
-                    공지사항
-                  </Link>
-                </LiSize>
-                <LiSize>
-                  <Link to="/" style={{ display: "block", color: "#333" }}>
-                    자주하는 질문
-                  </Link>
-                </LiSize>
-                <LiSize>
-                  <Link to="/" style={{ display: "block", color: "#333" }}>
-                    1:1 문의
-                  </Link>
-                </LiSize>
-                <LiSize>
-                  <Link to="/" style={{ display: "block", color: "#333" }}>
-                    대량주문 문의
-                  </Link>
-                </LiSize>
-              </CustomDepth>
-            </CustomDepLi>
-          </UlFlex>
-        </RightFlex>
-        <div style={{ marginTop: "20px" }}>
-          <LogoFlex>
-            <InnerLogo>
-              <H1Height onClick={() => navigate("/")}>
-                <img src={logo} alt="메인로고"></img>
-              </H1Height>
-              <UlStyle>
-                <li>
-                  <Link
-                    to="/"
-                    style={{
-                      color: "rgb(95, 0, 128)",
-                      fontWeight: "500",
-                      fontSize: "18px",
-                    }}
-                  >
-                    마켓컬리
-                  </Link>
-                </li>
-              </UlStyle>
-            </InnerLogo>
-
-            <RelDiv>
-              <InputSearch type="text" placeholder="검색어를 입력해주세요" />
-              <SearchBtn>
-                <FiSearch
-                  style={{
-                    fontSize: "22px",
-                    color: "rgb(95,0,128)",
-                  }}
-                />
-              </SearchBtn>
-            </RelDiv>
-            <div>
-              <FlexIcon>
-                <li
-                  style={{ position: "relative" }}
-                  onMouseEnter={() => {
-                    setMaps({ display: "block" });
-                  }}
-                  onMouseLeave={() => {
-                    setMaps({ display: "none" });
+    <>
+      <AllHead id="header">
+        <div style={{ width: "1050px", margin: "0 auto" }}>
+          <RightFlex className="headTop">
+            <UlFlex>
+              <CustomDepLi className="af">
+                <BtnTop
+                  style={{ color: "rgb(95, 0, 128)" }}
+                  type="button"
+                  onClick={() => {
+                    navigate("/signup");
                   }}
                 >
-                  <MapStyle aria-label="지도" />
-                  <AbsolDiv
-                    style={maps}
+                  회원가입
+                </BtnTop>
+              </CustomDepLi>
+              <CustomDepLi className="af">
+                <BtnTop
+                  type="button"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  로그인
+                </BtnTop>
+              </CustomDepLi>
+              <CustomDepLi style={{ position: "relative" }}>
+                <BtnTop
+                  type="button"
+                  onMouseOver={(e) => {
+                    setDisplays({ display: "block" });
+                  }}
+                  onMouseLeave={() => {
+                    setDisplays({ display: "none" });
+                  }}
+                >
+                  고객센터 <TiArrowSortedDown />
+                </BtnTop>
+                <CustomDepth
+                  style={displays}
+                  className="customDepth"
+                  onMouseEnter={() => {
+                    setDisplays({ display: "block" });
+                  }}
+                  onMouseLeave={() => {
+                    setDisplays({ display: "none" });
+                  }}
+                >
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      공지사항
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      자주하는 질문
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      1:1 문의
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      대량주문 문의
+                    </Link>
+                  </LiSize>
+                </CustomDepth>
+              </CustomDepLi>
+            </UlFlex>
+          </RightFlex>
+          <div className="headMid" style={{ marginTop: "20px" }}>
+            <LogoFlex>
+              <InnerLogo>
+                <H1Height onClick={() => navigate("/")}>
+                  <img src={logo} alt="메인로고"></img>
+                </H1Height>
+                <UlStyle>
+                  <li>
+                    <Link
+                      to="/"
+                      style={{
+                        color: "rgb(95, 0, 128)",
+                        fontWeight: "500",
+                        fontSize: "18px",
+                      }}
+                    >
+                      마켓컬리
+                    </Link>
+                  </li>
+                </UlStyle>
+              </InnerLogo>
+
+              <RelDiv>
+                <InputSearch type="text" placeholder="검색어를 입력해주세요" />
+                <SearchBtn>
+                  <FiSearch
+                    style={{
+                      fontSize: "22px",
+                      color: "rgb(95,0,128)",
+                    }}
+                  />
+                </SearchBtn>
+              </RelDiv>
+              <div>
+                <FlexIcon>
+                  <li
+                    style={{ position: "relative" }}
                     onMouseEnter={() => {
                       setMaps({ display: "block" });
                     }}
@@ -387,112 +387,266 @@ const Header = () => {
                       setMaps({ display: "none" });
                     }}
                   >
-                    <p>
-                      <InnerSpan>배송지를 등록</InnerSpan>하고
-                      <br />
-                      구매 가능한 상품을 확인하세요!
-                    </p>
-                    <InBtnBox>
-                      <InnerBtn onClick={() => navigate("/login")}>
-                        로그인
-                      </InnerBtn>
-                      <InnerBtn2>주소 검색</InnerBtn2>
-                    </InBtnBox>
-                  </AbsolDiv>
-                </li>
-                <li>
-                  <HeartStyle />
-                </li>
-                <li>
-                  <CartStyle />
-                </li>
-              </FlexIcon>
-            </div>
-          </LogoFlex>
-        </div>
-        <div>
+                    <MapStyle aria-label="지도" />
+                    <AbsolDiv
+                      style={maps}
+                      onMouseEnter={() => {
+                        setMaps({ display: "block" });
+                      }}
+                      onMouseLeave={() => {
+                        setMaps({ display: "none" });
+                      }}
+                    >
+                      <p>
+                        <InnerSpan>배송지를 등록</InnerSpan>하고
+                        <br />
+                        구매 가능한 상품을 확인하세요!
+                      </p>
+                      <InBtnBox>
+                        <InnerBtn onClick={() => navigate("/login")}>
+                          로그인
+                        </InnerBtn>
+                        <InnerBtn2>주소 검색</InnerBtn2>
+                      </InBtnBox>
+                    </AbsolDiv>
+                  </li>
+                  <li>
+                    <HeartStyle />
+                  </li>
+                  <li>
+                    <CartStyle />
+                  </li>
+                </FlexIcon>
+              </div>
+            </LogoFlex>
+          </div>
           <div>
-            <ThirdFlex>
-              <div>
-                <CateDiv>
-                  <div>
-                    <SpanSide></SpanSide>
-                    <SpanSide></SpanSide>
-                    <SpanSide></SpanSide>
-                  </div>
-                  <CateTitle className="hov">카테고리</CateTitle>
-                  <div>
-                    <SubCate className="wback">
-                      {/* eslint-disable-next-line array-callback-return */}
-                      {main.map((item) => {
-                        return (
-                          <InnerCate key={item.id}>
-                            <span></span>
-                            <MainCateP>{item.mains}</MainCateP>
-                          </InnerCate>
-                        );
-                      })}
-                    </SubCate>
-                    <SubInnerCate className="depth">
-                      {main.map((items) => {
-                        return (
-                          <li key={items.id}>
-                            <p>{items.sub}</p>
-                          </li>
-                        );
-                      })}
-                    </SubInnerCate>
-                  </div>
-                </CateDiv>
-              </div>
-              <MainCate>
-                <li>
-                  <Link
-                    to="/"
-                    className="maincate"
-                    style={{ color: "#333", fontWeight: "500" }}
-                  >
-                    신상품
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/"
-                    className="maincate"
-                    style={{ color: "#333", fontWeight: "500" }}
-                  >
-                    베스트
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/"
-                    className="maincate"
-                    style={{ color: "#333", fontWeight: "500" }}
-                  >
-                    알뜰쇼핑
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/"
-                    className="maincate"
-                    style={{ color: "#333", fontWeight: "500" }}
-                  >
-                    특가/혜택
-                  </Link>
-                </li>
-              </MainCate>
-              <div>
-                <Deliever href="#n">
-                  <InnerSpan>샛별・낮</InnerSpan> 배송안내
-                </Deliever>
-              </div>
-            </ThirdFlex>
+            <div>
+              <ThirdFlex>
+                <div>
+                  <CateDiv>
+                    <div>
+                      <SpanSide></SpanSide>
+                      <SpanSide></SpanSide>
+                      <SpanSide></SpanSide>
+                    </div>
+                    <CateTitle className="hov">카테고리</CateTitle>
+                    <div>
+                      <SubCate className="wback">
+                        {/* eslint-disable-next-line array-callback-return */}
+                        {main.map((item) => {
+                          return (
+                            <InnerCate key={item.id}>
+                              <span></span>
+                              <MainCateP>{item.mains}</MainCateP>
+                            </InnerCate>
+                          );
+                        })}
+                      </SubCate>
+                      <SubInnerCate className="depth">
+                        {main.map((items) => {
+                          return (
+                            <li key={items.id}>
+                              <p>{items.mains}</p>
+                            </li>
+                          );
+                        })}
+                      </SubInnerCate>
+                    </div>
+                  </CateDiv>
+                </div>
+                <MainCate>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      신상품
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      베스트
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      알뜰쇼핑
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      특가/혜택
+                    </Link>
+                  </li>
+                </MainCate>
+                <div>
+                  <Deliever href="#n">
+                    <InnerSpan>샛별・낮</InnerSpan> 배송안내
+                  </Deliever>
+                </div>
+              </ThirdFlex>
+            </div>
           </div>
         </div>
-      </div>
-    </AllHead>
+      </AllHead>
+      <AllHead id="headerbot" style={{ display: "none", marginTop: "0" }}>
+        <div style={{ width: "1050px", margin: "0 auto" }}>
+          <div>
+            <div>
+              <ThirdFlex>
+                <div>
+                  <CateDiv>
+                    <div>
+                      <SpanSide></SpanSide>
+                      <SpanSide></SpanSide>
+                      <SpanSide></SpanSide>
+                    </div>
+                    <CateTitle className="hov">카테고리</CateTitle>
+                    <div>
+                      <SubCate className="wback">
+                        {/* eslint-disable-next-line array-callback-return */}
+                        {main.map((item) => {
+                          return (
+                            <InnerCate key={item.id}>
+                              <span></span>
+                              <MainCateP>{item.mains}</MainCateP>
+                            </InnerCate>
+                          );
+                        })}
+                      </SubCate>
+                      <SubInnerCate className="depth">
+                        {main.map((items) => {
+                          return (
+                            <li key={items.id}>
+                              <p>{items.mains}</p>
+                            </li>
+                          );
+                        })}
+                      </SubInnerCate>
+                    </div>
+                  </CateDiv>
+                </div>
+                <MainCate2>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      신상품
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      베스트
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      알뜰쇼핑
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="maincate"
+                      style={{ color: "#333", fontWeight: "500" }}
+                    >
+                      특가/혜택
+                    </Link>
+                  </li>
+                </MainCate2>
+                <div className="headMid">
+                  <LogoFlex>
+                    <RelDiv2>
+                      <InputSearch2
+                        type="text"
+                        placeholder="검색어를 입력해주세요"
+                      />
+                      <SearchBtn>
+                        <FiSearch
+                          style={{
+                            fontSize: "17px",
+                            color: "#000",
+                            fontWeight: "600",
+                          }}
+                        />
+                      </SearchBtn>
+                    </RelDiv2>
+                  </LogoFlex>
+                </div>
+                <div>
+                  <div>
+                    <FlexIcon>
+                      <li
+                        style={{ position: "relative" }}
+                        onMouseEnter={() => {
+                          setMaps({ display: "block" });
+                        }}
+                        onMouseLeave={() => {
+                          setMaps({ display: "none" });
+                        }}
+                      >
+                        <MapStyle aria-label="지도" />
+                        <AbsolDiv
+                          style={maps}
+                          onMouseEnter={() => {
+                            setMaps({ display: "block" });
+                          }}
+                          onMouseLeave={() => {
+                            setMaps({ display: "none" });
+                          }}
+                        >
+                          <p>
+                            <InnerSpan>배송지를 등록</InnerSpan>하고
+                            <br />
+                            구매 가능한 상품을 확인하세요!
+                          </p>
+                          <InBtnBox>
+                            <InnerBtn onClick={() => navigate("/login")}>
+                              로그인
+                            </InnerBtn>
+                            <InnerBtn2>주소 검색</InnerBtn2>
+                          </InBtnBox>
+                        </AbsolDiv>
+                      </li>
+                      <li>
+                        <HeartStyle />
+                      </li>
+                      <li>
+                        <CartStyle />
+                      </li>
+                    </FlexIcon>
+                  </div>
+                </div>
+              </ThirdFlex>
+            </div>
+          </div>
+        </div>
+      </AllHead>
+    </>
   );
 };
 
@@ -502,6 +656,10 @@ const AllHead = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   margin-top: 10px;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.07);
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
 `;
 
 const RightFlex = styled.div`
@@ -780,4 +938,32 @@ const SubInnerCate = styled.ul`
   background: #999;
   top: 54px;
   left: 247px;
+`;
+
+const MainCate2 = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  margin-left: 66px;
+`;
+
+const RelDiv2 = styled.div`
+  position: relative;
+`;
+
+const InputSearch2 = styled.input`
+  display: flex;
+  -moz-box-align: center;
+  align-items: center;
+  -moz-box-pack: justify;
+  justify-content: space-between;
+  padding-left: 14px;
+  border-radius: 6px;
+  box-shadow: rgb(247, 247, 247) 0px 0px 0px 1px inset;
+  position: relative;
+  width: 242px;
+  height: 36px;
+  border: medium none;
+  background-color: rgb(255, 255, 255);
+  outline: 0;
 `;
