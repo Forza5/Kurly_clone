@@ -55,15 +55,13 @@ const Review = () => {
           {review.map((item) => {
             const date = item.createdAt.split("T");
             const trimedDate = date[0].split("-");
-            console.log(trimedDate[0]);
             const name = item.name.split("");
             const spliceStar = name.splice(1, 1, "*");
             const JoinedName = name.join("");
 
-            console.log(JoinedName);
             return (
-              <ReplyDiv>
-                <ReplyDivFlex key={item.reviewId}>
+              <ReplyDiv key={item.reviewId}>
+                <ReplyDivFlex>
                   <ReplyDivCenter>
                     <ReplySpanPurple>베스트 </ReplySpanPurple>
                     <ReplySpan>퍼플 </ReplySpan>

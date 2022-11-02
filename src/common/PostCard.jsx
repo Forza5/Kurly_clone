@@ -6,10 +6,14 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
-import next from "../pages/img/next_arrow.svg";
+
+import { useNavigate } from "react-router-dom";
+
 import prev_color from "../pages/img/prev_btn_color.svg";
 
+
 const PostCard = ({ number }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const DetailData = useSelector((state) => state.goods.data);
   // const slide1 = DetailData.splice(0, 8);
@@ -18,7 +22,6 @@ const PostCard = ({ number }) => {
     dispatch(AcyncGetGoods());
   }, []);
   let a = { number }.number;
-  console.log(a);
 
   const settings = {
     dots: false, // 점은 안 보이게
@@ -47,16 +50,22 @@ const PostCard = ({ number }) => {
         return (
           8 * (a - 1) <= index &&
           index < 8 * a - 1 && (
-            <Container>
+            <Container key={item.goodsId}>
               <ImageContainer>
-                <ProductImg alt="상품이미지" src={item.goodsImage} />{" "}
+                <ProductImg
+                  onClick={() => navigate(`/detail/${item.goodsId}`)}
+                  alt="상품이미지"
+                  src={item.goodsImage}
+                />{" "}
                 <div>
-                  <CartButton />
+                  <CartButton paramId={item.goodsId} />
                 </div>
               </ImageContainer>
 
               {/* 위 상품이미지 */}
-              <TextContainer>
+              <TextContainer
+                onClick={() => navigate(`/detail/${item.goodsId}`)}
+              >
                 <ProductName>{item.goodsName}</ProductName>
                 <PriceContainer>
                   <PriceColumn>

@@ -26,7 +26,7 @@ export const AcyncGetOneGood = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await goodsApi.getOneGood(payload);
-      console.log(data);
+      console.log("모달용 정보?", data.data.data);
       return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
