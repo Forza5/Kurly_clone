@@ -280,16 +280,18 @@ const Header = () => {
   window.addEventListener("scroll", () => {
     let scroll = window.scrollY;
     if (scroll > 0) {
+      document.getElementById("heads").style.height = "46px";
       document.getElementById("header").style.display = "none";
       document.getElementById("headerbot").style.display = "block";
     } else {
+      document.getElementById("heads").style.height = "146px";
       document.getElementById("header").style.display = "block";
       document.getElementById("headerbot").style.display = "none";
     }
   });
 
   return (
-    <>
+    <div id="heads" style={{ overflowY: "scroll", height: "146px" }}>
       <AllHead id="header">
         <div style={{ width: "1050px", margin: "0 auto" }}>
           <RightFlex className="headTop">
@@ -549,7 +551,10 @@ const Header = () => {
                           );
                         })}
                       </SubCate>
-                      <SubInnerCate className="depth">
+                      <SubInnerCate
+                        className="depth"
+                        style={{ display: "none" }}
+                      >
                         {main.map((items) => {
                           return (
                             <li key={items.id}>
@@ -609,7 +614,12 @@ const Header = () => {
           </div>
         </div>
       </AllHead>
-      <AllHead id="headerbot" style={{ display: "none", marginTop: "0" }}>
+      <AllHead
+        id="headerbot"
+        style={{
+          display: "none",
+        }}
+      >
         <div style={{ width: "1050px", margin: "0 auto" }}>
           <div>
             <div>
@@ -634,7 +644,10 @@ const Header = () => {
                           );
                         })}
                       </SubCate>
-                      <SubInnerCate className="depth">
+                      <SubInnerCate
+                        className="depth"
+                        style={{ display: "none" }}
+                      >
                         {main.map((items) => {
                           return (
                             <li key={items.id}>
@@ -752,7 +765,7 @@ const Header = () => {
           </div>
         </div>
       </AllHead>
-    </>
+    </div>
   );
 };
 
@@ -760,14 +773,13 @@ export default Header;
 
 const AllHead = styled.div`
   font-family: "Noto Sans KR", sans-serif;
-  margin-top: 10px;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.07);
   position: fixed;
-  height: 156px;
-  box-sizing: border-box;
   width: 100%;
   left: 0;
   top: 0;
+  background: #fff;
+  z-index: 99;
 `;
 
 const RightFlex = styled.div`
@@ -816,7 +828,6 @@ const CustomDepLi2 = styled.li`
 const BtnTop = styled.button`
   color: #333;
   font-size: 12px;
-  font-weight: 600;
 `;
 
 const UlFlex = styled.ul`
@@ -1038,6 +1049,7 @@ const SubCate = styled.ul`
   display: none;
   max-height: calc(-55px + 90.5vh);
   min-height: 200px;
+  z-index: 99;
 `;
 
 const InnerCate = styled.li`
