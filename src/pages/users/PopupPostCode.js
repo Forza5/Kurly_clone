@@ -53,10 +53,14 @@ const PopupPostCode = ({ onClose, setAddress }) => {
       </button>
       <DaumPostcode
         style={{ height: "100%" }}
-        onComplete={(data) => setAddress(data.address)}
-        autoClose={true}
+        onComplete={
+          (data) => setAddress(data.address)
+          // console.log(data.address)
+        }
+        onClose={() => {
+          onClose();
+        }}
       />
-      {/* 닫기버튼 */}
     </div>
   );
 };

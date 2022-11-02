@@ -3,16 +3,13 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 
 export const instance = axios.create({
-  baseURL:
-    // `http://13.125.143.92:3000`,
-    `http://13.209.80.213:3000`,
-  // `https://www.spartaseosu.shop`,
+  baseURL: `https://www.cheolsu.shop/`,
 });
 // const user = useSelector((state) => state.members.members.id);
 // console.log("user", user);
 
 export const membersApi = {
-  loginMember: (paylaod) => instance.post(`/members/login`, paylaod), //각각의 get,post,delete,patch입니다!
+  loginMember: (payload) => instance.post(`/members/login`, payload), //각각의 get,post,delete,patch입니다!
   creatMember: (members) => instance.post(`/members/signup`, members),
   deleteMember: () =>
     instance.delete(`/members/login`, {
@@ -22,10 +19,8 @@ export const membersApi = {
     instance.patch(`/members/login`, edit, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  //   getMember: () =>
-  //     instance.get(`/members/login/:id`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     }),
+  emailCheck: (payload) => instance.post(`/answer/mail`, payload),
+  codeCheck: (payload) => instance.post(`/answer/codefind`, payload),
 };
 
 export const commentsApi = {
@@ -41,25 +36,70 @@ export const commentsApi = {
     }),
 };
 
-export const postsApi = {
+export const goodsApi = {
   //각각의 get,post,delete,patch입니다!
-  getPosts: () => {
-    return instance.get(`/posts`);
+  getGoods: () => {
+    return instance.get(`/goods`);
   },
 
-  creatPost: (inputs) => {
-    console.log(inputs);
-    return instance.post(`/posts`, inputs, {
+  getOneGood: (goodsId) => {
+    return instance.get(`/goods/${goodsId}`);
+  },
+};
+
+export const reviewsApi = {
+  //각각의 get,post,delete,patch입니다!
+  getReviews: (payload) => {
+    return instance.get(`/reviews/${payload}`);
+  },
+
+  getOneGood: (goodsId) => {
+    return instance.get(`/goods/${goodsId}`);
+  },
+};
+
+export const cartApi = {
+  //각각의 get,post,delete,patch입니다!
+  getCart: (payload) => {
+    return instance.get(`/cart/${payload}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
 
-  deletePost: (params) =>
-    instance.delete(`/posts/${params}`, {
+  postCart: (payload) => {
+    return instance.post(`/cart`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  increaseCart: (payload) => {
+    console.log({ quantity: payload.quantity, cartId: payload.cartId });
+    return instance.put(
+      `/cart`,
+      { quantity: payload.quantity, cartId: payload.cartId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  },
+  decreaseCart: (payload) => {
+    return instance.put(
+      `/cart`,
+      { quantity: payload.quantity, cartId: payload.cartId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  },
+  putcart: (payload) =>
+    instance.put(`/cart/${payload.postId}`, payload.post, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  updatePost: (payload) =>
-    instance.patch(`/posts/${payload.postId}`, payload.post, {
+  deleteCart: (cartId) =>
+    instance.delete(`/cart/${cartId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  deleteAllCart: (userId) =>
+    instance.delete(`/cart/all/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };

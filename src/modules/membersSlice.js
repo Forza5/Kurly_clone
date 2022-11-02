@@ -10,11 +10,10 @@ const initialState = {
 export const AcyncLoginMember = createAsyncThunk(
   "members/loginMember",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const data = await membersApi.loginMember(payload);
       console.log("login data", data);
-      localStorage.setItem("token", data.data.data.token);
+      localStorage.setItem("token", data.data.accessToken);
       // sessionStorage.setItem("token", data.data.data.token);
       return payload;
     } catch (error) {
@@ -29,7 +28,7 @@ export const AcyncCreateMember = createAsyncThunk(
     try {
       console.log("create", payload);
       const data = await membersApi.creatMember(payload);
-      console.log(data);
+      console.log(data.data.message);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -58,6 +57,33 @@ export const AcyncUpdateMember = createAsyncThunk(
       const data = await membersApi.updateMember(payload);
       console.log("수정하기", data, payload);
       return payload;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+//이메일체크
+export const AcyncEmailCheck = createAsyncThunk(
+  "members/emailCheck",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await membersApi.emailCheck(payload);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+//인증번호 확인
+export const AcyncCodeCheck = createAsyncThunk(
+  "members/codeCheck",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await membersApi.codeCheck(payload);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -105,12 +131,12 @@ const membersSlice = createSlice({
     //회원가입
     [AcyncCreateMember.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      alert("회원가입을 축하드립니다");
+      alert(payload.message);
     },
     [AcyncCreateMember.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-      console.log(state.err.response.data);
+      console.log(state.error.response.data);
       alert("다시 입력해주세요");
     },
     //회원삭제
@@ -129,6 +155,24 @@ const membersSlice = createSlice({
     [AcyncUpdateMember.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.err = payload;
+    },
+    //이메일 체크
+    [AcyncEmailCheck.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+    },
+    [AcyncEmailCheck.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.err = payload;
+    },
+    //인증번호 확인
+    [AcyncCodeCheck.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      alert("인증이 완료되었습니다.");
+    },
+    [AcyncCodeCheck.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.err = payload;
+      alert("인증번호를 다시 확인해주세요");
     },
   },
 });

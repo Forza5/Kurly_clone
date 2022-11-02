@@ -9,6 +9,8 @@ import Cart from "../pages/cart/Cart";
 import MainSlider from "../pages/slide/MainSlide";
 import PostCard from "../common/PostCard";
 import ModalBasic from "../common/ModalBasic";
+import Detail from "../pages/detail/Detail";
+import Review from "../pages/detail/Review";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -24,6 +26,8 @@ const Router = () => {
         <Route path="/mainslider" element={<MainSlider />} />
         <Route path="/postcard" element={<PostCard />} />
         <Route path="/modalbasic" element={<ModalBasic />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/review" element={<Review />} />
       </Routes>
     </BrowserRouter>
   );
