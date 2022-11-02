@@ -63,6 +63,33 @@ export const AcyncUpdateMember = createAsyncThunk(
   }
 );
 
+//이메일체크
+export const AcyncEmailCheck = createAsyncThunk(
+  "members/emailCheck",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await membersApi.emailCheck(payload);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+//인증번호 확인
+export const AcyncCodeCheck = createAsyncThunk(
+  "members/codeCheck",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await membersApi.codeCheck(payload);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 //members
 const membersSlice = createSlice({
   name: "members",
@@ -128,6 +155,24 @@ const membersSlice = createSlice({
     [AcyncUpdateMember.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.err = payload;
+    },
+    //이메일 체크
+    [AcyncEmailCheck.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+    },
+    [AcyncEmailCheck.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.err = payload;
+    },
+    //인증번호 확인
+    [AcyncCodeCheck.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      alert("인증이 완료되었습니다.");
+    },
+    [AcyncCodeCheck.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.err = payload;
+      alert("인증번호를 다시 확인해주세요");
     },
   },
 });

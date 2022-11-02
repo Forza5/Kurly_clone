@@ -30,6 +30,7 @@ const initialState = {
       brand: null,
       createdAt: "2022-10-28T09:06:19.000Z",
       updatedAt: "2022-10-28T09:06:19.000Z",
+      count: 1,
     },
     {
       goodsId: 2,
@@ -58,6 +59,7 @@ const initialState = {
       brand: null,
       createdAt: "2022-10-28T09:27:57.000Z",
       updatedAt: "2022-10-28T09:27:57.000Z",
+      count: 1,
     },
   ],
   error: {},

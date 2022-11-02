@@ -18,8 +18,9 @@ function ModalBasic({ setModalOpen }) {
     setModalOpen(false);
   };
   useEffect(() => {
-    dispatch(AcyncGetOneGood());
-  });
+    dispatch(AcyncGetOneGood(2));
+    //임의의 값 넣어둠
+  }, []);
 
   const [productData] = useSelector((state) => state.goods.data);
   console.log(productData);

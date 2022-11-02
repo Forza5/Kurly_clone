@@ -3,26 +3,40 @@ import styled from "styled-components";
 import "../css/reset.css";
 import "../css/font.css";
 import { useDispatch, useSelector } from "react-redux";
-import { AcyncGetCart } from "../../modules/cartSlice";
+import {
+  AcyncDecreaseCart,
+  AcyncDeleteCart,
+  AcyncGetCart,
+  AcyncIncreaseCart,
+} from "../../modules/cartSlice";
+import jwtDecode from "jwt-decode";
+import updateList from "../../modules/cartSlice";
 
 const Cart = () => {
+  const token = localStorage.getItem("token");
+  const realToken = jwtDecode(token);
+  console.log(realToken);
   const dispatch = useDispatch();
   const [carts, setCarts] = useState(false);
-  const [number, setNumber] = useState(1);
 
-  const onDecrease = () => {
-    setNumber((prevNumber) => (prevNumber <= 1 ? 1 : prevNumber - 1));
+  const onDecrease = (payload) => {
+    dispatch(AcyncDecreaseCart(payload));
   };
-  const onIncrease = () => {
-    setNumber((prevNumber) => prevNumber + 1);
+  const onIncrease = (payload) => {
+    dispatch(AcyncIncreaseCart(payload));
   };
 
-  const productData = useSelector((state) => state.goods.data);
-  console.log(productData);
+  const productData = useSelector((state) => state.cart.data);
+  console.log("product", productData);
 
   useEffect(() => {
-    dispatch(AcyncGetCart());
+    dispatch(AcyncGetCart(realToken.userId));
+    console.log("cart");
   }, []);
+
+  const onDeleteHandler = (cartId) => {
+    dispatch(AcyncDeleteCart(cartId));
+  };
 
   return (
     <div
@@ -136,24 +150,46 @@ const Cart = () => {
                     <ul key={item.goodsId}>
                       <GoodsList>
                         <GoodsLabel />
-                        <GoodsInput />
-                        <GoodsImg src={item.goodsImage} />
+                        <GoodsInput
+                          type="checkbox"
+                          checked={item.ischecked}
+                          onChange={() => dispatch(updateList(item.productId))}
+                        />
+                        <GoodsImg src={item.productImage} />
                         <span></span>
 
                         <GoodsName>
                           <ATitle>
-                            <PTitle>{item.goodsName}</PTitle>
+                            <PTitle>{item.productName}</PTitle>
                           </ATitle>
                         </GoodsName>
                         <Counter>
-                          <CounterDown onClick={onDecrease}></CounterDown>
-                          <Num>{number}</Num>
-                          <CounterUp onClick={onIncrease}></CounterUp>
+                          <CounterDown
+                            onClick={() =>
+                              onDecrease({
+                                userId: item.userId,
+                                quantity: item.quantity - 1,
+                                cartId: item.cartId,
+                              })
+                            }
+                          ></CounterDown>
+                          <Num>{item.quantity}</Num>
+                          <CounterUp
+                            onClick={() =>
+                              onIncrease({
+                                userId: item.userId,
+                                quantity: item.quantity + 1,
+                                cartId: item.cartId,
+                              })
+                            }
+                          ></CounterUp>
                         </Counter>
                         <Price>
-                          <PriceSpan>{item.goodsPrice * number}원</PriceSpan>
+                          <PriceSpan>{item.price}원</PriceSpan>
                         </Price>
-                        <DeleteButton>
+                        <DeleteButton
+                          onClick={() => onDeleteHandler(item.cartId)}
+                        >
                           <DeleteSpan></DeleteSpan>
                         </DeleteButton>
                       </GoodsList>
@@ -380,7 +416,7 @@ const Cart = () => {
                     textAlign: "right",
                   }}
                 >
-                  0
+                  8500
                   <span
                     style={{
                       paddingLeft: "2px",
@@ -593,12 +629,12 @@ const GoodsLabel = styled.label`
 `;
 
 const GoodsInput = styled.input`
-  overflow: hidden;
+  /* overflow: hidden;
   position: absolute;
   clip: rect(0px, 0px, 0px, 0px);
-  clip-path: inset(50%);
-  width: 1px;
-  height: 1px;
+  clip-path: inset(50%); */
+  width: 100px;
+  height: 100px;
 `;
 
 const GoodsImg = styled.img`

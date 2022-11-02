@@ -82,6 +82,13 @@ const Main = () => {
       >
         디테일페이지
       </button>{" "}
+      <button
+        type="button"
+        style={{ border: "1px solid gray" }}
+        onClick={() => navigate("/review")}
+      >
+        리뷰
+      </button>{" "}
     </div>
   );
 };

@@ -2,17 +2,33 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { cartApi } from "../instance";
 
 const initialState = {
-  cart: {},
+  data: [
+    {
+      cartId: "",
+      userId: "",
+      productId: "",
+      productImage: null,
+      productName: "",
+      price: "",
+      quantity: "",
+      Spare: null,
+      category: null,
+      address: null,
+      createdAt: null,
+      updatedAt: null,
+    },
+  ],
   error: {},
 };
 
 //카트 확인하기
 export const AcyncGetCart = createAsyncThunk(
   "cart/getCart",
-  async (thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const data = await cartApi.getCart();
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await cartApi.getCart(payload);
+      console.log(data.data.data);
+      return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -31,14 +47,25 @@ export const AcyncPostCart = createAsyncThunk(
     }
   }
 );
-//카드 수량 수정하기
-export const AcyncPutCart = createAsyncThunk(
-  "cart/putCart",
+//카드 증량하기
+export const AcyncIncreaseCart = createAsyncThunk(
+  "cart/increaseCart",
   async (payload, thunkAPI) => {
     try {
-      const data = await cartApi.putCart(payload);
-      console.log(data);
-      return thunkAPI.fulfillWithValue(data.data);
+      const data = await cartApi.increaseCart(payload);
+      return payload;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+//카드 감량하기
+export const AcyncDecreaseCart = createAsyncThunk(
+  "cart/decreaseCart",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await cartApi.decreaseCart(payload);
+      return payload;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -50,6 +77,7 @@ export const AcyncDeleteCart = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await cartApi.deleteCart(payload);
+      console.log(data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -73,12 +101,23 @@ export const AcyncDeleteAllCart = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    updateList: (state, action) => {
+      state.data = state.data.map((item) =>
+        item.productId === action.payload
+          ? { ...item, isChecked: !item.isChecked }
+          : item
+      );
+    },
+  },
   extraReducers: {
     //카트 확인하기
     [AcyncGetCart.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      state.cart = payload;
+      const checkData = payload.map((item) => {
+        return { ...item, isChecked: false };
+      });
+      state.data = checkData;
     },
     [AcyncGetCart.rejected]: (state, { payload }) => {
       state.isLoading = false;
@@ -93,11 +132,41 @@ const cartSlice = createSlice({
       state.error = payload;
       console.log(state.error.response.data);
     },
-    //카드 수량 수정하기
-    [AcyncPutCart.fulfilled]: (state) => {
+    //카드 증량하기
+    [AcyncIncreaseCart.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log("증량하기", action.payload);
+      const newIncreaseCart = state.data.map((item) => {
+        if (item.cartId !== action.payload.cartId) {
+          return item;
+        } else
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+      });
+      state.data = newIncreaseCart;
     },
-    [AcyncPutCart.rejected]: (state, { payload }) => {
+    [AcyncIncreaseCart.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+    },
+    //카드 감량하기
+    [AcyncDecreaseCart.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log("감량하기", action.payload);
+      const newDecreaseCart = state.data.map((item) => {
+        if (item.cartId !== action.payload.cartId) {
+          return item;
+        } else
+          return {
+            ...item,
+            quantity: item.quantity - 1,
+          };
+      });
+      state.data = newDecreaseCart;
+    },
+    [AcyncDecreaseCart.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
     },

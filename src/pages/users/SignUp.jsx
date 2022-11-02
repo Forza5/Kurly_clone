@@ -4,7 +4,11 @@ import { useState } from "react";
 import Button from "../../common/Button";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AcyncCreateMember } from "../../modules/membersSlice";
+import {
+  AcyncCreateMember,
+  AcyncEmailCheck,
+  AcyncCodeCheck,
+} from "../../modules/membersSlice";
 import { Postcode } from "react-daum-postcode/lib/loadPostcode";
 import PopupDom from "./PopupDom";
 import PopupPostCode from "./PopupPostCode";
@@ -17,6 +21,11 @@ const SignUp = () => {
     "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGc+CiAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ni4wMDAwMDAsIC0xMDkwLjAwMDAwMCkgdHJhbnNsYXRlKDEwMC4wMDAwMDAsIDkzNi4wMDAwMDApIHRyYW5zbGF0ZSg2MC4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzVGMDA4MCIvPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K";
   const [checked, setChecked] = useState(false);
 
+  const [checkList, setCheckList] = useState({
+    tos: false,
+    privacy: false,
+  });
+  console.log("checkList", checkList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -88,8 +97,8 @@ const SignUp = () => {
   //유효성검사
   const [isEmail, setIsEmail] = useState(false);
 
+  const emailRegex = /^[\w]+\@[a-z]+\.[a-z\.]{2,5}$/;
   const onChangeEmail = (e) => {
-    const emailRegex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
     console.log(e.target.value);
     setEmail(e.target.value);
     if (!emailRegex.test(email)) {
@@ -174,9 +183,24 @@ const SignUp = () => {
     console.log("가입하기 버튼 누름");
     navigate("/members/login");
   };
-  const onCheckHandler = () => {
-    dispatch(AcyncCreateMember(account));
-    console.log("중복확인 버튼 누름");
+  const onIdHandler = () => {
+    dispatch(AcyncCreateMember({ id: id }));
+  };
+  const [certi, setCerti] = useState(false);
+  const redundantCheck = () => {
+    if (emailRegex.test(email)) {
+      dispatch(AcyncEmailCheck({ email: email }));
+      setCerti(true);
+    } else {
+      alert("이메일형식으로 입력해주세요");
+    }
+  };
+  const [emailCerti, setEmailCerti] = useState("");
+  const onChangeCheckCode = (e) => {
+    setEmailCerti(e.target.value);
+  };
+  const onCodeCheck = () => {
+    dispatch(AcyncCodeCheck({ code: emailCerti }));
   };
 
   return (
@@ -207,7 +231,7 @@ const SignUp = () => {
             </div>
           </StFormbox>
 
-          <Button onClick={onCheckHandler} width="150px">
+          <Button onClick={onIdHandler} width="150px">
             중복확인
           </Button>
         </StRow>
@@ -268,8 +292,24 @@ const SignUp = () => {
             )}
           </StFormbox>
 
-          <Button width="150px">중복확인</Button>
+          <Button onClick={redundantCheck} width="150px">
+            중복확인
+          </Button>
         </StRow>
+        {certi ? (
+          <StRow>
+            <StLabel></StLabel>
+            <StFormbox>
+              <StInput
+                placeholder="3분내에 인증번호를 입력해주세요"
+                onChange={onChangeCheckCode}
+              />
+            </StFormbox>
+            <Button onClick={onCodeCheck} width="150px">
+              인증번호 확인
+            </Button>
+          </StRow>
+        ) : null}
         <StRow>
           <StLabel>
             휴대폰<Span>*</Span>
@@ -392,8 +432,20 @@ const SignUp = () => {
           <StColumn>
             <StRow>
               <label>
-                <StCheckbox type="checkbox" />
-                <img src={checkBoxUrl} alt="전체동의체크" />
+                <StCheckbox
+                  type="checkbox"
+                  checked={checkList.total}
+                  onChange={() =>
+                    setCheckList({
+                      ...checkList,
+                      total: !checkList.total,
+                    })
+                  }
+                />
+                <img
+                  src={checkList.total ? colorcheckBoxUrl : checkBoxUrl}
+                  alt="전체동의체크"
+                />
                 <span>전체 동의합니다.</span>
               </label>
 
@@ -406,8 +458,20 @@ const SignUp = () => {
               <StHorizontal>
                 <div>
                   <label>
-                    <StCheckbox type="checkbox" />
-                    <img src={checkBoxUrl} alt="이용약관 동의" />
+                    <StCheckbox
+                      type="checkbox"
+                      checked={checkList.tos}
+                      onChange={() =>
+                        setCheckList({
+                          ...checkList,
+                          tos: !checkList.tos,
+                        })
+                      }
+                    />
+                    <img
+                      src={checkList.tos ? colorcheckBoxUrl : checkBoxUrl}
+                      alt="이용약관 동의"
+                    />
                     이용약관 동의 <span>(필수)</span>
                   </label>
                 </div>
@@ -421,12 +485,16 @@ const SignUp = () => {
                   <label>
                     <StCheckbox
                       type="checkbox"
-                      checked={true}
-                      onChange={() => setChecked(!checked)}
-                      value={checked}
+                      checked={checkList.privacy}
+                      onChange={() =>
+                        setCheckList({
+                          ...checkList,
+                          privacy: !checkList.privacy,
+                        })
+                      }
                     />
                     <img
-                      src={checked ? colorcheckBoxUrl : checkBoxUrl}
+                      src={checkList.privacy ? colorcheckBoxUrl : checkBoxUrl}
                       alt="개인정보 수집∙이용 동의(필수)"
                     />
                     개인정보 수집∙이용 동의 <span>(필수)</span>
@@ -440,9 +508,21 @@ const SignUp = () => {
               <StHorizontal>
                 <div>
                   <label>
-                    <StCheckbox type="checkbox" />
+                    <StCheckbox
+                      type="checkbox"
+                      onChange={() =>
+                        setCheckList({
+                          ...checkList,
+                          privacyOptional: !checkList.privacyOptional,
+                        })
+                      }
+                    />
                     <img
-                      src={checkBoxUrl}
+                      src={
+                        checkList.privacyOptional
+                          ? colorcheckBoxUrl
+                          : checkBoxUrl
+                      }
                       alt="개인정보 수집∙이용 동의(선택)"
                     />
                     개인정보 수집∙이용 동의 <span>(선택)</span>
@@ -454,21 +534,54 @@ const SignUp = () => {
             </StRow>
             <StRow>
               <label>
-                <StCheckbox type="checkbox" />
+                <StCheckbox
+                  type="checkbox"
+                  checked={checkList.freeDelivery}
+                  onChange={() =>
+                    setCheckList({
+                      ...checkList,
+                      freeDelivery: !checkList.freeDelivery,
+                    })
+                  }
+                />
                 <img
-                  src={checkBoxUrl}
+                  src={checkList.freeDelivery ? colorcheckBoxUrl : checkBoxUrl}
                   alt="무료배송, 할인쿠폰 등 헤택/정보 수신 동의(선택)"
                 />
                 무료배송, 할인쿠폰 등 헤택/정보 수신 동의 <span>(선택)</span>
               </label>
             </StRow>
             <StRow>
-              <StCheckbox type="checkbox" />
-              <img src={checkBoxUrl} alt="SMS" />
+              <StCheckbox
+                type="checkbox"
+                checked={checkList.SMS}
+                onChange={() =>
+                  setCheckList({
+                    ...checkList,
+                    SMS: !checkList.SMS,
+                  })
+                }
+              />
+              <img
+                src={checkList.SMS ? colorcheckBoxUrl : checkBoxUrl}
+                alt="SMS"
+              />
 
               <span>SMS</span>
-              <StCheckbox type="checkbox" />
-              <img src={checkBoxUrl} alt="이메일" />
+              <StCheckbox
+                type="checkbox"
+                checked={checkList.email}
+                onChange={() =>
+                  setCheckList({
+                    ...checkList,
+                    email: !checkList.email,
+                  })
+                }
+              />
+              <img
+                src={checkList.email ? colorcheckBoxUrl : checkBoxUrl}
+                alt="이메일"
+              />
 
               <span>이메일</span>
             </StRow>
@@ -478,8 +591,20 @@ const SignUp = () => {
 
             <StRow>
               <label>
-                <StCheckbox type="checkbox" />
-                <img src={checkBoxUrl} alt="본인은 만 14세 이상입니다." />
+                <StCheckbox
+                  type="checkbox"
+                  checked={checkList.adult}
+                  onChange={() =>
+                    setCheckList({
+                      ...checkList,
+                      adult: !checkList.adult,
+                    })
+                  }
+                />
+                <img
+                  src={checkList.adult ? colorcheckBoxUrl : checkBoxUrl}
+                  alt="본인은 만 14세 이상입니다."
+                />
                 본인은 만 14세 이상입니다.<span>(필수)</span>
               </label>
             </StRow>

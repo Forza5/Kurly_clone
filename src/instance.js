@@ -19,10 +19,8 @@ export const membersApi = {
     instance.patch(`/members/login`, edit, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  //   getMember: () =>
-  //     instance.get(`/members/login/:id`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     }),
+  emailCheck: (paylaod) => instance.post(`/answer/mail`, paylaod),
+  codeCheck: (paylaod) => instance.post(`/answer/codefind`, paylaod),
 };
 
 export const commentsApi = {
@@ -51,27 +49,41 @@ export const goodsApi = {
 
 export const cartApi = {
   //각각의 get,post,delete,patch입니다!
-  getCart: () => {
-    return instance.get(`/cart`, {
+  getCart: (payload) => {
+    return instance.get(`/cart/${payload}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
 
-  postCart: (inputs) => {
-    return instance.post(`/cart`, inputs, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  increaseCart: (payload) => {
+    console.log({ quantity: payload.quantity, cartId: payload.cartId });
+    return instance.put(
+      `/cart`,
+      { quantity: payload.quantity, cartId: payload.cartId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  },
+  decreaseCart: (payload) => {
+    return instance.put(
+      `/cart`,
+      { quantity: payload.quantity, cartId: payload.cartId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   },
   putcart: (payload) =>
     instance.put(`/cart/${payload.postId}`, payload.post, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  deleteCart: (params) =>
-    instance.delete(`/cart/${params}`, {
+  deleteCart: (cartId) =>
+    instance.delete(`/cart/${cartId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  deleteAllCart: (params) =>
-    instance.delete(`/cart/all`, {
+  deleteAllCart: (userId) =>
+    instance.delete(`/cart/all/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     }),
 };

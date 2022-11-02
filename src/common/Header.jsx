@@ -7,39 +7,139 @@ import { TiArrowSortedDown } from "react-icons/ti";
 import logo from "../pages/img/logo.svg";
 import { FiSearch } from "react-icons/fi";
 import "../pages/css/Header.css";
+import jwt_decode from "jwt-decode";
 
 const Header = () => {
   const navigate = useNavigate();
   const [displays, setDisplays] = useState({ display: "none" });
+  const [loginDisplays, setLoginDisplays] = useState({ display: "none" });
+
   const [maps, setMaps] = useState({ display: "none" });
+  const [token, setToken] = useState("");
+  console.log(token);
+  const storedToken = localStorage.getItem("token");
+  useEffect(() => {
+    if (storedToken) {
+      let decodedData = jwt_decode(storedToken);
+      setToken(decodedData);
+      let expirationDate = decodedData.exp;
+      var current_time = Date.now() / 1000;
+      if (expirationDate < current_time) {
+        localStorage.removeItem("token");
+      }
+    }
+  }, []);
+  const logOutHandler = () => {
+    localStorage.removeItem("token");
+  };
 
   return (
     <AllHead>
       <div style={{ width: "1020px", margin: "0 auto" }}>
         <RightFlex className="headTop">
+          {token ? (
+            <UlFlex>
+              <LoginDiv>
+                <ABlock>
+                  <WelcomSpan>웰컴</WelcomSpan>
+                  {token.name} 님
+                  <NewIconImg
+                    alt="뉴 아이콘"
+                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHJlY3QgZmlsbD0iI0ZBNjIyRiIgZmlsbC1ydWxlPSJub256ZXJvIiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHJ4PSI3Ii8+CiAgICAgICAgPHBhdGggZD0iTTguMzg1IDEwdi0uMDA2TDUuNjQ1IDYuMjFWMTBoLTEuNlY0aDEuNmwyLjc0IDMuNzg4VjRoMS42djZoLTEuNnoiIGZpbGw9IiNGRkYiLz4KICAgIDwvZz4KPC9zdmc+Cg=="
+                  />
+                  <ArrowMarkSpan></ArrowMarkSpan>
+                </ABlock>
+                <CustomDepth
+                  style={loginDisplays}
+                  className="customDepth"
+                  onMouseEnter={() => {
+                    setLoginDisplays({ display: "block" });
+                  }}
+                  onMouseLeave={() => {
+                    setLoginDisplays({ display: "none" });
+                  }}
+                >
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      주문 내역
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      선물 내역
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      찜한 상품
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      상품 후기
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      적립금
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      쿠폰
+                    </Link>
+                  </LiSize>
+
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      개인정보 수정
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link to="/" style={{ display: "block", color: "#333" }}>
+                      나의 컬리 스타일
+                    </Link>
+                  </LiSize>
+                  <LiSize>
+                    <Link
+                      onClick={logOutHandler}
+                      to="/"
+                      style={{ display: "block", color: "#333" }}
+                    >
+                      로그아웃
+                    </Link>
+                  </LiSize>
+                </CustomDepth>
+              </LoginDiv>
+            </UlFlex>
+          ) : (
+            <UlFlex>
+              <CustomDepLi className="af">
+                <BtnTop
+                  style={{ color: "rgb(95, 0, 128)" }}
+                  type="button"
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                >
+                  회원가입
+                </BtnTop>
+              </CustomDepLi>
+              <CustomDepLi className="af">
+                <BtnTop
+                  type="button"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  로그인
+                </BtnTop>{" "}
+              </CustomDepLi>
+            </UlFlex>
+          )}
+
           <UlFlex>
-            <CustomDepLi className="af">
-              <BtnTop
-                style={{ color: "rgb(95, 0, 128)" }}
-                type="button"
-                onClick={() => {
-                  navigate("/signup");
-                }}
-              >
-                회원가입
-              </BtnTop>
-            </CustomDepLi>
-            <CustomDepLi className="af">
-              <BtnTop
-                type="button"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                로그인
-              </BtnTop>
-            </CustomDepLi>
-            <CustomDepLi style={{ position: "relative" }}>
+            <CustomDepLi2 style={{ position: "relative" }}>
               <BtnTop
                 type="button"
                 onMouseOver={(e) => {
@@ -82,7 +182,7 @@ const Header = () => {
                   </Link>
                 </LiSize>
               </CustomDepth>
-            </CustomDepLi>
+            </CustomDepLi2>
           </UlFlex>
         </RightFlex>
         <div style={{ marginTop: "20px" }}>
@@ -259,11 +359,22 @@ const CustomDepLi = styled.li`
     color: rgb(153, 153, 153);
     bottom: 2px;
   }
+`;
+
+const CustomDepLi2 = styled.li`
+  ::after {
+    content: "|";
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 13px;
+    position: relative;
+    color: rgb(153, 153, 153);
+    bottom: 2px;
+  }
   :last-child::after {
     display: none;
   }
 `;
-
 const BtnTop = styled.button`
   color: #333;
   font-size: 12px;
@@ -463,4 +574,46 @@ const Deliever = styled.a`
   border: 1px solid #eee;
   line-height: 15px;
   box-sizing: border-box;
+`;
+const LoginDiv = styled.div`
+  line-height: 35px;
+  position: relative;
+`;
+
+const ABlock = styled.a`
+  display: block;
+  cursor: pointer;
+`;
+const WelcomSpan = styled.div`
+  display: inline-block;
+  min-width: 38px;
+  height: 16px;
+  margin-right: 4px;
+  padding: 0px 4px;
+  border-radius: 30px;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  letter-spacing: -0.3px;
+  vertical-align: 0px;
+  border: 1px solid rgb(148, 146, 150);
+  background-color: rgb(255, 255, 255);
+  color: rgb(148, 146, 150);
+`;
+
+const NewIconImg = styled.img`
+  width: 10px;
+  margin-left: 2px;
+  line-height: 10px;
+  vertical-align: -1px;
+`;
+const ArrowMarkSpan = styled.span`
+  width: 8px;
+  height: 5px;
+  background-image: url(https://res.kurly.com/pc/ico/1908/ico_down_16x10.png);
+  background-size: cover;
+  background-position: center center;
+  display: inline-block;
+  margin-left: 5px;
+  margin-bottom: 1px;
 `;
