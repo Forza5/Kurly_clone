@@ -16,7 +16,6 @@ const Header = () => {
   const [maps, setMaps] = useState({ display: "none" });
   const [selected, setSelected] = useState("");
   const [token, setToken] = useState("");
-  console.log(token);
   const storedToken = localStorage.getItem("token");
   useEffect(() => {
     if (storedToken) {

@@ -5,46 +5,81 @@ import styled from "styled-components";
 import { AcyncGetOneGood } from "../../modules/goodsSlice";
 import { useSelector } from "react-redux";
 import "../css/reset.css";
+import jwt_decode from "jwt-decode";
+import { AcyncPostCart } from "../../modules/cartSlice";
+import Review from "./Review";
 
 const Detail = () => {
   const dispatch = useDispatch();
 
-  const { id } = useParams();
-
+  //장바구니에 넣을 userId 토큰에서 불러오기
+  const [token, setToken] = useState("");
+  const storedToken = localStorage.getItem("token");
   useEffect(() => {
-    dispatch(AcyncGetOneGood(7));
+    if (storedToken) {
+      let decodedData = jwt_decode(storedToken);
+      setToken(decodedData);
+      let expirationDate = decodedData.exp;
+      var current_time = Date.now() / 1000;
+      if (expirationDate < current_time) {
+        localStorage.removeItem("token");
+      }
+    }
   }, []);
 
-  const [productData] = useSelector((state) => state.goods.data);
-  console.log(productData);
-
+  //렌더링
+  const { id } = useParams();
+  useEffect(() => {
+    dispatch(AcyncGetOneGood(id));
+  }, []);
+  //state에서 값 불러오기
+  const [productData] = useSelector((state) => state.goods?.data);
+  //수량 증감
   const [number, setNumber] = useState(1);
-
   const onDecrease = () => {
     setNumber((prevNumber) => (prevNumber <= 1 ? 1 : prevNumber - 1));
   };
   const onIncrease = () => {
     setNumber((prevNumber) => prevNumber + 1);
   };
+  //장바구니에 넣기
+  const myPick = {
+    userId: token?.userId,
+    productId: productData?.goodsId,
+    quantity: number,
+    price: productData?.goodsPrice,
+    productName: productData?.goodsName,
+  };
+  const onPostCart = () => {
+    dispatch(AcyncPostCart(myPick));
+    console.log("myPick", myPick);
+  };
 
+  //천단위 반점 찍어주기
+  let price = productData?.goodsPrice;
+  let priceString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  let sum = price * number;
+  let totalPrice = sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  console.log(productData?.goodsImage);
   return (
     <Page>
       <Articles>
-        <DetailImg></DetailImg>
+        <DetailImg src={productData?.goodsImage} />
         <Inform>
           <div>
             <Delivery>샛별배송</Delivery>
             <FlexColumn>
               <BigName>
-                <NameH2>[만선] 홍가리비 500g (생물)</NameH2>
+                <NameH2>{productData?.goodsName}</NameH2>
                 <ShareButton></ShareButton>
               </BigName>
 
-              <NameP>맛이 차오른 제철 가리비</NameP>
+              {/* <NameP>맛이 차오른 제철 가리비</NameP> */}
             </FlexColumn>
           </div>
           <Price>
-            <PriceSpan1>5,300</PriceSpan1>
+            <PriceSpan1>{priceString}</PriceSpan1>
             <PriceSpan2>원</PriceSpan2>
           </Price>
           <Accumulate>로그인 후, 적립 헤택이 제공됩니다.</Accumulate>
@@ -52,7 +87,7 @@ const Detail = () => {
             <DescDl>
               <DescDt>배송</DescDt>
               <DescDd>
-                <DescP>{productData.delivery}</DescP>
+                <DescP>{productData?.delivery}</DescP>
                 <DescP2>
                   23시 전 주문 시 내일 아침 7시 전 도착 (대구·부산·울산 샛별배송
                   운영시간 별도 확인)
@@ -62,43 +97,43 @@ const Detail = () => {
             <DescDl>
               <DescDt>판매자</DescDt>
               <DescDd>
-                <DescP>{productData.seller}</DescP>
+                <DescP>{productData?.seller}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>포장타입</DescDt>
               <DescDd>
-                <DescP>{productData.deliveryType}</DescP>
+                <DescP>{productData?.deliveryType}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>판매단위</DescDt>
               <DescDd>
-                <DescP>{productData.salesUnit}</DescP>
+                <DescP>{productData?.salesUnit}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>중량/용량</DescDt>
               <DescDd>
-                <DescP>{productData.volume}</DescP>
+                <DescP>{productData?.volume}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>원산지</DescDt>
               <DescDd>
-                <DescP>{productData.origin}</DescP>
+                <DescP>{productData?.origin}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>알레르기정보</DescDt>
               <DescDd>
-                <DescP>{productData.allergy}</DescP>
+                <DescP>{productData?.allergy}</DescP>
               </DescDd>
             </DescDl>
             <DescDl>
               <DescDt>유통기한(또는 소비기한)정보</DescDt>
               <DescDd>
-                <DescP>{productData.shelfLife}</DescP>
+                <DescP>{productData?.shelfLife}</DescP>
               </DescDd>
             </DescDl>
           </Desc>
@@ -108,7 +143,7 @@ const Detail = () => {
                 <ProductDt>상품선택</ProductDt>
                 <ProductDiv>
                   <ProductName>
-                    <ProductSpan>[만선] 홍가리비 500g (생물)</ProductSpan>
+                    <ProductSpan>{productData?.goodsName}</ProductSpan>
                   </ProductName>
                   <CounterBox>
                     <Counter>
@@ -118,7 +153,7 @@ const Detail = () => {
                     </Counter>
                     <div>
                       <PriceSpan>
-                        {productData.goodsPrice * number}
+                        {price}
                         <span>원</span>
                       </PriceSpan>
                     </div>
@@ -130,7 +165,7 @@ const Detail = () => {
               <Box>
                 <InnerBox>
                   <PriceSpans>총 상품금액</PriceSpans>
-                  <TotalPrice> {productData.goodsPrice * number}</TotalPrice>
+                  <TotalPrice> {totalPrice}</TotalPrice>
                   <WonSpan>원</WonSpan>
                 </InnerBox>
                 <DivFlex>
@@ -152,13 +187,14 @@ const Detail = () => {
               </BellButton>
               <AddDiv>
                 <AddButton>
-                  <AddSpan>장바구니 담기</AddSpan>
+                  <AddSpan onClick={onPostCart}>장바구니 담기</AddSpan>
                 </AddButton>
               </AddDiv>
             </ButtonBox>
           </ProductSelect>
         </Inform>
       </Articles>
+      <Review />
     </Page>
   );
 };
@@ -177,11 +213,9 @@ const Articles = styled.article`
   justify-content: space-between;
   font-family: "Noto Sans";
 `;
-const DetailImg = styled.div`
+const DetailImg = styled.img`
   width: 430px;
   height: 552px;
-  background: url(https://product-image.kurly.com/product/image/edeabfe2-a4a0-4602-b33e-28fc706157f7.jpg)
-    0% 0% / cover;
 `;
 const Inform = styled.div`
   width: 560px;

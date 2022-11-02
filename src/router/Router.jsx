@@ -26,7 +26,7 @@ const Router = () => {
         <Route path="/mainslider" element={<MainSlider />} />
         <Route path="/postcard" element={<PostCard />} />
         <Route path="/modalbasic" element={<ModalBasic />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/review" element={<Review />} />
       </Routes>
     </BrowserRouter>
