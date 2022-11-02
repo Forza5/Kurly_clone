@@ -21,11 +21,40 @@ const SignUp = () => {
     "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGc+CiAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ni4wMDAwMDAsIC0xMDkwLjAwMDAwMCkgdHJhbnNsYXRlKDEwMC4wMDAwMDAsIDkzNi4wMDAwMDApIHRyYW5zbGF0ZSg2MC4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzVGMDA4MCIvPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K";
   const [checked, setChecked] = useState(false);
 
-  const [checkList, setCheckList] = useState({
+  const [check, setCheck] = useState({
     tos: false,
     privacy: false,
+    privacyOptional: false,
+    freeDelivery: false,
+    SMS: false,
+    email: false,
+    adult: false,
   });
-  console.log("checkList", checkList);
+
+  const [checkList, setCheckList] = useState([]);
+
+  // 체크박스 전체선택시 모두선택 체크박스 활성화시키기
+  const handleCheck = (e) => {
+    e.target.checked
+      ? setCheckList([...checkList, e.target.name])
+      : setCheckList(checkList.filter((el) => el !== e.target.name));
+  };
+
+  // 전체체크 선택시 전체 선택 or 전체해제
+  const checkAllHandler = (e) => {
+    e.target.checked
+      ? setCheckList([
+          "tos",
+          "privacy",
+          "privacyOptional",
+          "freeDelivery",
+          "SMS",
+          "email",
+          "adult",
+        ])
+      : setCheckList([]);
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -434,16 +463,12 @@ const SignUp = () => {
               <label>
                 <StCheckbox
                   type="checkbox"
-                  checked={checkList.total}
-                  onChange={() =>
-                    setCheckList({
-                      ...checkList,
-                      total: !checkList.total,
-                    })
-                  }
+                  name="checkAll"
+                  checked={checkList.length === 7 ? true : false}
+                  onChange={checkAllHandler}
                 />
                 <img
-                  src={checkList.total ? colorcheckBoxUrl : checkBoxUrl}
+                  src={checkList ? colorcheckBoxUrl : checkBoxUrl}
                   alt="전체동의체크"
                 />
                 <span>전체 동의합니다.</span>
@@ -460,13 +485,9 @@ const SignUp = () => {
                   <label>
                     <StCheckbox
                       type="checkbox"
-                      checked={checkList.tos}
-                      onChange={() =>
-                        setCheckList({
-                          ...checkList,
-                          tos: !checkList.tos,
-                        })
-                      }
+                      name="tos"
+                      checked={checkList.includes("tos") ? true : false}
+                      onChange={handleCheck}
                     />
                     <img
                       src={checkList.tos ? colorcheckBoxUrl : checkBoxUrl}
@@ -485,13 +506,9 @@ const SignUp = () => {
                   <label>
                     <StCheckbox
                       type="checkbox"
-                      checked={checkList.privacy}
-                      onChange={() =>
-                        setCheckList({
-                          ...checkList,
-                          privacy: !checkList.privacy,
-                        })
-                      }
+                      name="privacy"
+                      checked={checkList.includes("privacy") ? true : false}
+                      onChange={handleCheck}
                     />
                     <img
                       src={checkList.privacy ? colorcheckBoxUrl : checkBoxUrl}
@@ -510,12 +527,11 @@ const SignUp = () => {
                   <label>
                     <StCheckbox
                       type="checkbox"
-                      onChange={() =>
-                        setCheckList({
-                          ...checkList,
-                          privacyOptional: !checkList.privacyOptional,
-                        })
+                      name="privacyOptinal"
+                      checked={
+                        checkList.includes("privacyOptional") ? true : false
                       }
+                      onChange={handleCheck}
                     />
                     <img
                       src={
@@ -536,13 +552,9 @@ const SignUp = () => {
               <label>
                 <StCheckbox
                   type="checkbox"
-                  checked={checkList.freeDelivery}
-                  onChange={() =>
-                    setCheckList({
-                      ...checkList,
-                      freeDelivery: !checkList.freeDelivery,
-                    })
-                  }
+                  name="freeDelivery"
+                  checked={checkList.includes("freeDelivery") ? true : false}
+                  onChange={handleCheck}
                 />
                 <img
                   src={checkList.freeDelivery ? colorcheckBoxUrl : checkBoxUrl}
@@ -554,13 +566,9 @@ const SignUp = () => {
             <StRow>
               <StCheckbox
                 type="checkbox"
-                checked={checkList.SMS}
-                onChange={() =>
-                  setCheckList({
-                    ...checkList,
-                    SMS: !checkList.SMS,
-                  })
-                }
+                name="SMS"
+                checked={checkList.includes("SMS") ? true : false}
+                onChange={handleCheck}
               />
               <img
                 src={checkList.SMS ? colorcheckBoxUrl : checkBoxUrl}
@@ -570,13 +578,9 @@ const SignUp = () => {
               <span>SMS</span>
               <StCheckbox
                 type="checkbox"
-                checked={checkList.email}
-                onChange={() =>
-                  setCheckList({
-                    ...checkList,
-                    email: !checkList.email,
-                  })
-                }
+                name="이메일"
+                checked={checkList.includes("email") ? true : false}
+                onChange={handleCheck}
               />
               <img
                 src={checkList.email ? colorcheckBoxUrl : checkBoxUrl}
@@ -593,13 +597,9 @@ const SignUp = () => {
               <label>
                 <StCheckbox
                   type="checkbox"
-                  checked={checkList.adult}
-                  onChange={() =>
-                    setCheckList({
-                      ...checkList,
-                      adult: !checkList.adult,
-                    })
-                  }
+                  name="adult"
+                  checked={checkList.includes("adult") ? true : false}
+                  onChange={handleCheck}
                 />
                 <img
                   src={checkList.adult ? colorcheckBoxUrl : checkBoxUrl}

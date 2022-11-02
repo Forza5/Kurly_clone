@@ -1,41 +1,88 @@
-import goodsSlice from "../modules/goodsSlice";
+import React from "react";
+import { AcyncGetGoods } from "../modules/goodsSlice";
 import styled from "styled-components";
 import CartButton from "./CartButton";
-const postCard = () => {
-  return (
-    <Container>
-      <ImageContainer>
-        <ProductImg
-          alt="상품이미지"
-          src="https://img-cf.kurly.com/cdn-cgi/image/width=400,format=auto/shop/data/goods/165466863782l0.jpg"
-        />{" "}
-        <div>
-          <CartButton />
-        </div>
-      </ImageContainer>
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import Slider from "react-slick";
+import next from "../pages/img/next_arrow.svg";
+import prev from "../pages/img/prev-arrow.png";
 
-      {/* 위 상품이미지 */}
-      <TextContainer>
-        <ProductName>[하림] 안심 꿔바로우 450g</ProductName>
-        <PriceContainer>
-          <PriceColumn>
-            <div>
-              <Discount>10%</Discount>
-              <Price>
-                8910<span>원</span>
-              </Price>
-            </div>
-            <PriceUndiscounted>
-              9,900<span>원</span>
-            </PriceUndiscounted>
-          </PriceColumn>
-        </PriceContainer>
-      </TextContainer>
-    </Container>
+const PostCard = ({ number }) => {
+  const dispatch = useDispatch();
+  const DetailData = useSelector((state) => state.goods.data);
+  // const slide1 = DetailData.splice(0, 8);
+  // console.log(slide1);
+  useEffect(() => {
+    dispatch(AcyncGetGoods());
+  }, []);
+  let a = { number }.number;
+  console.log(a);
+
+  const settings = {
+    dots: false, // 점은 안 보이게
+    infinite: true, // 무한으로 즐기게
+    slidesToShow: 4, //4장씩 보이게 해주세요
+    slidesToScroll: 4, //4장씩 넘어가세요
+    nextArrow: (
+      <NextBtn className="nexts">
+        <img src={next} alt="다음" />
+      </NextBtn>
+    ),
+    prevArrow: (
+      <PreBtn className="prevs">
+        <img src={prev} alt="이전" />
+      </PreBtn>
+    ),
+  };
+
+  return (
+    <PostSlider {...settings}>
+      {DetailData.map((item, index) => {
+        return (
+          8 * (a - 1) <= index &&
+          index < 8 * a - 1 && (
+            <Container>
+              <ImageContainer>
+                <ProductImg alt="상품이미지" src={item.goodsImage} />{" "}
+                <div>
+                  <CartButton />
+                </div>
+              </ImageContainer>
+
+              {/* 위 상품이미지 */}
+              <TextContainer>
+                <ProductName>{item.goodsName}</ProductName>
+                <PriceContainer>
+                  <PriceColumn>
+                    <div>
+                      <Discount>{item.goodsSale}%</Discount>
+                      <Price>
+                        {(item.goodsPrice * item.goodsSale) / 100}
+                        <span>원</span>
+                      </Price>
+                    </div>
+                    <PriceUndiscounted>
+                      {item.Price}
+                      <span>원</span>
+                    </PriceUndiscounted>
+                  </PriceColumn>
+                </PriceContainer>
+              </TextContainer>
+            </Container>
+          )
+        );
+      })}
+    </PostSlider>
   );
 };
 
-export default postCard;
+export default PostCard;
+const PostSlider = styled(Slider)`
+  position: relative;
+  transition: all 0.3s;
+`;
 
 const Container = styled.div`
   color: rgb(51, 51, 51);
@@ -103,4 +150,27 @@ const PriceUndiscounted = styled.span`
   text-decoration: line-through;
   margin-top: 2px;
   white-space: nowrap;
+`;
+const PreBtn = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20%;
+  z-index: 999;
+  cursor: pointer;
+  height: 52px;
+  opacity: 0;
+  transition: all 0.3s;
+`;
+
+const NextBtn = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20%;
+  z-index: 999;
+  cursor: pointer;
+  height: 52px;
+  opacity: 0;
+  transition: all 0.3s;
 `;

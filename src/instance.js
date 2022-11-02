@@ -9,7 +9,7 @@ export const instance = axios.create({
 // console.log("user", user);
 
 export const membersApi = {
-  loginMember: (paylaod) => instance.post(`/members/login`, paylaod), //각각의 get,post,delete,patch입니다!
+  loginMember: (payload) => instance.post(`/members/login`, payload), //각각의 get,post,delete,patch입니다!
   creatMember: (members) => instance.post(`/members/signup`, members),
   deleteMember: () =>
     instance.delete(`/members/login`, {
@@ -19,8 +19,8 @@ export const membersApi = {
     instance.patch(`/members/login`, edit, {
       headers: { Authorization: `Bearer ${token}` },
     }),
-  emailCheck: (paylaod) => instance.post(`/answer/mail`, paylaod),
-  codeCheck: (paylaod) => instance.post(`/answer/codefind`, paylaod),
+  emailCheck: (payload) => instance.post(`/answer/mail`, payload),
+  codeCheck: (payload) => instance.post(`/answer/codefind`, payload),
 };
 
 export const commentsApi = {
@@ -47,6 +47,17 @@ export const goodsApi = {
   },
 };
 
+export const reviewsApi = {
+  //각각의 get,post,delete,patch입니다!
+  getReviews: (payload) => {
+    return instance.get(`/reviews/${payload}`);
+  },
+
+  getOneGood: (goodsId) => {
+    return instance.get(`/goods/${goodsId}`);
+  },
+};
+
 export const cartApi = {
   //각각의 get,post,delete,patch입니다!
   getCart: (payload) => {
@@ -55,6 +66,11 @@ export const cartApi = {
     });
   },
 
+  postCart: (payload) => {
+    return instance.post(`/cart`, payload, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
   increaseCart: (payload) => {
     console.log({ quantity: payload.quantity, cartId: payload.cartId });
     return instance.put(

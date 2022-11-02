@@ -1,6 +1,17 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { AcyncGetReviews } from "../../modules/reviewSlice";
 
 const Review = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  useEffect(() => {
+    dispatch(AcyncGetReviews(1));
+  }, []);
+
+  const review = useSelector((state) => state.reviews.data);
   return (
     <ReviewDiv>
       <ReviewSection>
@@ -26,7 +37,7 @@ const Review = () => {
         <TextReviewDiv>
           <TextReviewDivDiv></TextReviewDivDiv>
           <TotalAmount>
-            <TotalSpan>총 5,519 개</TotalSpan>
+            <TotalSpan>총 {review.length} 개</TotalSpan>
             <TotalDiv>
               <TotalButton>추천순</TotalButton>
               <TotalButtonGray>최근등록순</TotalButtonGray>
@@ -40,15 +51,54 @@ const Review = () => {
             <NoticeSpan>공지</NoticeSpan>
             <NoticeButton>금주의 Best 후기 안내</NoticeButton>
           </NoticeDiv>
-          <ReplyDiv>
-            <ReplyDivFlex>
-              <ReplyDivCenter>
-                <ReplySpanPurple>베스트 </ReplySpanPurple>
-                <ReplySpan>퍼플 </ReplySpan>
-                <ReplySpan>유저이름 </ReplySpan>
-              </ReplyDivCenter>
-            </ReplyDivFlex>
-          </ReplyDiv>
+
+          {review.map((item) => {
+            const date = item.createdAt.split("T");
+            const trimedDate = date[0].split("-");
+            console.log(trimedDate[0]);
+            const name = item.name.split("");
+            const spliceStar = name.splice(1, 1, "*");
+            const JoinedName = name.join("");
+
+            console.log(JoinedName);
+            return (
+              <ReplyDiv>
+                <ReplyDivFlex key={item.reviewId}>
+                  <ReplyDivCenter>
+                    <ReplySpanPurple>베스트 </ReplySpanPurple>
+                    <ReplySpan>퍼플 </ReplySpan>
+                    <ReplySpanName>{JoinedName} </ReplySpanName>
+                  </ReplyDivCenter>
+                </ReplyDivFlex>{" "}
+                <ReplyActicle>
+                  <div>
+                    <ArticleDiv>
+                      <ArticleH3>{item.goodsName}</ArticleH3>
+                    </ArticleDiv>{" "}
+                    <ArticleP>{item.review}</ArticleP>
+                  </div>
+                  <ImgDiv>
+                    <ImgButton></ImgButton>
+                  </ImgDiv>
+                  <ArticleFooter>
+                    <div>
+                      <ArticleSpan>
+                        {trimedDate[0] +
+                          "." +
+                          trimedDate[1] +
+                          "." +
+                          trimedDate[2]}
+                      </ArticleSpan>{" "}
+                    </div>
+                    <ArticleButton>
+                      <ButtonSpan></ButtonSpan>
+                      <span>도움돼요</span>
+                    </ArticleButton>
+                  </ArticleFooter>
+                </ReplyActicle>
+              </ReplyDiv>
+            );
+          })}
         </TextReviewDiv>
       </ReviewSection>
     </ReviewDiv>
@@ -283,4 +333,109 @@ const ReplySpanPurple = styled.span`
 `;
 const ReplySpan = styled.span`
   font-weight: 500;
+  display: inline-block;
+  height: 18px;
+  border: 1px solid rgb(168, 100, 216);
+  border-radius: 3px;
+  padding: 3px 4px 3px 5px;
+  margin-right: 4px;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 10px;
+  text-align: center;
+  word-break: keep-all;
+  background-color: rgb(168, 100, 216);
+  color: rgb(255, 255, 255);
+`;
+const ReplySpanName = styled.span`
+  font-weight: 500;
+`;
+const ReplyActicle = styled.article`
+  flex: 1 1 0%;
+  overflow: hidden;
+`;
+
+const ArticleDiv = styled.div`
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  gap: 5px;
+  height: 19px;
+  padding-right: 20px;
+`;
+const ArticleH3 = styled.h3`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+  color: rgb(153, 153, 153);
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: normal;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`;
+const ArticleP = styled.p`
+  padding-top: 12px;
+  word-break: break-word;
+  white-space: pre-line;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  color: rgb(51, 51, 51);
+  padding-right: 20px;
+`;
+const ImgDiv = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 3px;
+  overflow: auto;
+  padding: 15px 0px 2px;
+`;
+const ImgButton = styled.button`
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  width: 93px;
+  height: 93px;
+  flex-shrink: 0;
+  background: url(https://img-cf.kurly.com/shop/data/review/20221102/3c3e75a3-a89d-4694-8895-4166fe20fe3f.jpeg)
+    0% 0% / cover no-repeat;
+`;
+
+const ArticleFooter = styled.footer`
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 19px;
+  padding-right: 20px;
+`;
+const ArticleSpan = styled.span`
+  color: rgb(153, 153, 153);
+`;
+const ArticleButton = styled.button`
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  min-width: 88px;
+  height: 32px;
+  padding: 0px 13px 0px 11px;
+  border: 1px solid rgb(226, 226, 226);
+  border-radius: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  color: rgb(153, 153, 153);
+`;
+const ButtonSpan = styled.span`
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIHZpZXdCb3g9IjAgMCAxNCAxNCIgZmlsbD0ibm9uZSIKICAgICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoCiAgICBkPSJNNC4wNDgzNyAxMi45OTk4SDIuMjE5MzVDMS41NDU5MiAxMi45OTk4IDEgMTIuNDYyNiAxIDExLjc5OTlWNy41OTk5MkMxIDYuOTM3MTggMS41NDU5MiA2LjM5OTkzIDIuMjE5MzUgNi4zOTk5M0g0LjA0ODM3TTguMzE2MDggNS4xOTk5NVYyLjc5OTk4QzguMzE2MDggMS44MDU4OCA3LjQ5NzIgMSA2LjQ4NzA2IDFMNC4wNDgzNyA2LjM5OTkzVjEyLjk5OTlIMTAuOTI1NUMxMS41MzM1IDEzLjAwNjYgMTIuMDUzNyAxMi41NzE1IDEyLjE0NDggMTEuOTc5OUwxMi45ODYyIDYuNTc5OTNDMTMuMDM5OSA2LjIzMTg1IDEyLjkzNTUgNS44NzgxMiAxMi43MDA4IDUuNjEyNDVDMTIuNDY2IDUuMzQ2NzggMTIuMTI0NiA1LjE5NTk2IDExLjc2NjggNS4xOTk5NUg4LjMxNjA4WiIKICAgIHN0cm9rZT0iIzk5OTk5OSIgc3Ryb2tlLXdpZHRoPSIxLjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==)
+    center center no-repeat;
 `;

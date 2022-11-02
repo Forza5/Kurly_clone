@@ -37,6 +37,15 @@ const Cart = () => {
   const onDeleteHandler = (cartId) => {
     dispatch(AcyncDeleteCart(cartId));
   };
+  //상품금액
+  const newProductData = productData.map((item) => {
+    return item.price * item.quantity;
+  });
+  console.log(newProductData);
+  const totalPrice = newProductData.reduce((acc, cur, i) => {
+    return acc + cur;
+  });
+  let result = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <div
@@ -146,8 +155,13 @@ const Cart = () => {
             >
               {productData.length > 0 ? (
                 productData.map((item) => {
+                  let sum = item.price * item.quantity;
+                  let price = sum
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  console.log(price);
                   return (
-                    <ul key={item.goodsId}>
+                    <ul key={item.cartId}>
                       <GoodsList>
                         <GoodsLabel />
                         <GoodsInput
@@ -185,7 +199,7 @@ const Cart = () => {
                           ></CounterUp>
                         </Counter>
                         <Price>
-                          <PriceSpan>{item.price}원</PriceSpan>
+                          <PriceSpan>{price}원</PriceSpan>
                         </Price>
                         <DeleteButton
                           onClick={() => onDeleteHandler(item.cartId)}
@@ -416,7 +430,7 @@ const Cart = () => {
                     textAlign: "right",
                   }}
                 >
-                  8500
+                  {result}
                   <span
                     style={{
                       paddingLeft: "2px",
@@ -537,7 +551,7 @@ const Cart = () => {
                       lineHeight: "28px",
                     }}
                   >
-                    0
+                    {result}
                   </strong>
                   <span
                     style={{

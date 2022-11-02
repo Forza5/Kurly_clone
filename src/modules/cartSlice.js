@@ -2,22 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { cartApi } from "../instance";
 
 const initialState = {
-  data: [
-    {
-      cartId: "",
-      userId: "",
-      productId: "",
-      productImage: null,
-      productName: "",
-      price: "",
-      quantity: "",
-      Spare: null,
-      category: null,
-      address: null,
-      createdAt: null,
-      updatedAt: null,
-    },
-  ],
+  data: [],
   error: {},
 };
 
@@ -114,6 +99,7 @@ const cartSlice = createSlice({
     //카트 확인하기
     [AcyncGetCart.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
+      console.log(payload);
       const checkData = payload.map((item) => {
         return { ...item, isChecked: false };
       });

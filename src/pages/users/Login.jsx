@@ -22,6 +22,7 @@ const Login = () => {
   const onLoginHandler = () => {
     console.log("로그인핸들러");
     dispatch(AcyncLoginMember(account));
+    navigate("/");
   };
   return (
     <LgContainer>

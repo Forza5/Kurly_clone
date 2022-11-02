@@ -10,7 +10,6 @@ import { AcyncGetOneGood } from "../modules/goodsSlice";
 function ModalBasic({ setModalOpen }) {
   const token = localStorage.getItem("token");
   const realToken = jwt_decode(token);
-  console.log(realToken);
 
   const dispatch = useDispatch();
   // 모달 끄기
@@ -18,25 +17,23 @@ function ModalBasic({ setModalOpen }) {
     setModalOpen(false);
   };
   useEffect(() => {
-    dispatch(AcyncGetOneGood(2));
+    dispatch(AcyncGetOneGood(3));
     //임의의 값 넣어둠
   }, []);
 
-  const [productData] = useSelector((state) => state.goods.data);
+  const [productData] = useSelector((state) => state.goods?.data);
   console.log(productData);
-
   const myPick = {
-    userId: realToken.id,
-    productId: productData.goodsId,
+    userId: realToken.userId,
+    productId: productData?.goodsId,
     quantity: 1,
-    price: productData.goodsPrice,
-    productName: productData.goodsName,
+    price: productData?.goodsPrice,
+    productName: productData?.goodsName,
   };
-
   const onPostCart = () => {
     dispatch(AcyncPostCart(myPick));
   };
-
+  console.log(myPick);
   return (
     <div className="presentaion">
       <div className="innerpresentation">
@@ -45,11 +42,11 @@ function ModalBasic({ setModalOpen }) {
             <div>
               <div className="informations">
                 <div className="productName">
-                  <span className="name">{productData.goodsName}</span>
+                  <span className="name">{productData?.goodsName}</span>
                 </div>
                 <div className="priceInformations">
                   <div>
-                    <span className="price">{productData.goodsPrice}</span>
+                    <span className="price">{productData?.goodsPrice}</span>
                   </div>
                   <div className="controlQuantity">
                     <button
@@ -74,7 +71,7 @@ function ModalBasic({ setModalOpen }) {
 
                   <div>
                     <span className="sumSpan">
-                      {productData.goodsPrice * 1}
+                      {productData?.goodsPrice * 1}
                     </span>
                     <span className="sumSpan2">원</span>
                   </div>
