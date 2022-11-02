@@ -6,9 +6,11 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
-import next from "../pages/img/next_arrow.svg";
-import prev from "../pages/img/prev-arrow.png";
+
 import { useNavigate } from "react-router-dom";
+
+import prev_color from "../pages/img/prev_btn_color.svg";
+
 
 const PostCard = ({ number }) => {
   const navigate = useNavigate();
@@ -28,12 +30,16 @@ const PostCard = ({ number }) => {
     slidesToScroll: 4, //4장씩 넘어가세요
     nextArrow: (
       <NextBtn className="nexts">
-        <img src={next} alt="다음" />
+        <img
+          src={prev_color}
+          alt="다음"
+          style={{ transform: "rotateY(-180deg)" }}
+        />
       </NextBtn>
     ),
     prevArrow: (
       <PreBtn className="prevs">
-        <img src={prev} alt="이전" />
+        <img src={prev_color} alt="이전" />
       </PreBtn>
     ),
   };
@@ -94,7 +100,7 @@ const PostSlider = styled(Slider)`
 const Container = styled.div`
   color: rgb(51, 51, 51);
   cursor: pointer;
-  width: 249px;
+  width: 249px !important;
 `;
 
 const ImageContainer = styled.div`
@@ -160,24 +166,22 @@ const PriceUndiscounted = styled.span`
 `;
 const PreBtn = styled.div`
   position: absolute;
-  top: 50%;
+  top: 38%;
   transform: translateY(-50%);
-  left: 20%;
-  z-index: 999;
+  left: -2.8%;
+  z-index: 9;
   cursor: pointer;
   height: 52px;
-  opacity: 0;
   transition: all 0.3s;
 `;
 
 const NextBtn = styled.div`
   position: absolute;
-  top: 50%;
+  top: 38%;
   transform: translateY(-50%);
-  right: 20%;
-  z-index: 999;
+  right: -1.8%;
+  z-index: 9;
   cursor: pointer;
   height: 52px;
-  opacity: 0;
   transition: all 0.3s;
 `;
