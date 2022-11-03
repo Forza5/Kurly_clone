@@ -133,6 +133,7 @@ const membersSlice = createSlice({
     [AcyncLoginMember.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.members = payload;
+      window.location.replace("/");
       alert("로그인 되었습니다.");
     },
     [AcyncLoginMember.rejected]: (state, { payload }) => {

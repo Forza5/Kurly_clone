@@ -30,6 +30,7 @@ const Header = () => {
   }, []);
   const logOutHandler = () => {
     localStorage.removeItem("token");
+    window.location.replace("/");
   };
   console.log(token.userId);
   //메인리스트
@@ -315,7 +316,7 @@ const Header = () => {
                     />
                     <ArrowMarkSpan></ArrowMarkSpan>
                   </ABlock>
-                  <CustomDepth
+                  <CustomDepth2
                     style={loginDisplays}
                     className="customDepth"
                     onMouseEnter={() => {
@@ -326,56 +327,116 @@ const Header = () => {
                     }}
                   >
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         주문 내역
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         선물 내역
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         찜한 상품
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         상품 후기
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         적립금
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         쿠폰
                       </Link>
                     </LiSize>
 
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         개인정보 수정
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link to="/" style={{ display: "block", color: "#333" }}>
+                      <Link
+                        to="/"
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
+                      >
                         나의 컬리 스타일
                       </Link>
                     </LiSize>
                     <LiSize>
-                      <Link
+                      <button
+                        type="button"
                         onClick={logOutHandler}
-                        to="/"
-                        style={{ display: "block", color: "#333" }}
+                        style={{
+                          display: "block",
+                          color: "#333",
+                          lineHeight: "20px",
+                        }}
                       >
                         로그아웃
-                      </Link>
+                      </button>
                     </LiSize>
-                  </CustomDepth>
+                  </CustomDepth2>
                 </LoginDiv>
               </UlFlex>
             ) : (
@@ -399,7 +460,7 @@ const Header = () => {
                     }}
                   >
                     로그인
-                  </BtnTop>{" "}
+                  </BtnTop>
                 </CustomDepLi>
               </UlFlex>
             )}
@@ -522,7 +583,9 @@ const Header = () => {
                     <HeartStyle />
                   </li>
                   <li>
-                    <CartStyle  onClick={() => navigate(`/cart/${token?.userId}`)} />
+                    <CartStyle
+                      onClick={() => navigate(`/cart/${token?.userId}`)}
+                    />
                   </li>
                 </FlexIcon>
               </div>
@@ -797,6 +860,17 @@ const CustomDepth = styled.ul`
   position: absolute;
   top: 22px;
   right: 0;
+  width: 120px;
+  border: 1px solid rgb(153, 153, 153);
+  z-index: 2;
+`;
+
+const CustomDepth2 = styled.ul`
+  background: #fff;
+  padding: 10px;
+  position: absolute;
+  top: 30px;
+  left: 0;
   width: 120px;
   border: 1px solid rgb(153, 153, 153);
   z-index: 2;
