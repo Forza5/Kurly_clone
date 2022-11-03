@@ -4,7 +4,13 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
-  return <Layouts>{children}</Layouts>;
+  return (
+    <Layouts>
+      <Header />
+      {children}
+      <Footer />
+    </Layouts>
+  );
 };
 
 export default Layout;

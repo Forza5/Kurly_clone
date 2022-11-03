@@ -8,6 +8,7 @@ import "../css/reset.css";
 import jwt_decode from "jwt-decode";
 import { AcyncPostCart } from "../../modules/cartSlice";
 import Review from "./Review";
+import Layout from "../../common/Layout";
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -74,139 +75,141 @@ const Detail = () => {
   // };
 
   return (
-    <Page>
-      <Articles>
-        <DetailImg src={productData?.goodsImage} />
-        <Inform>
-          <div>
-            <Delivery>샛별배송</Delivery>
-            <FlexColumn>
-              <BigName>
-                <NameH2>{productData?.goodsName}</NameH2>
-                <ShareButton></ShareButton>
-              </BigName>
+    <Layout>
+      <Page>
+        <Articles>
+          <DetailImg src={productData?.goodsImage} />
+          <Inform>
+            <div>
+              <Delivery>샛별배송</Delivery>
+              <FlexColumn>
+                <BigName>
+                  <NameH2>{productData?.goodsName}</NameH2>
+                  <ShareButton></ShareButton>
+                </BigName>
 
-              {/* <NameP>맛이 차오른 제철 가리비</NameP> */}
-            </FlexColumn>
-          </div>
-          <Price>
-            <PriceSpan1>{priceString}</PriceSpan1>
-            <PriceSpan2>원</PriceSpan2>
-          </Price>
-          <Accumulate>로그인 후, 적립 헤택이 제공됩니다.</Accumulate>
-          <Desc>
-            <DescDl>
-              <DescDt>배송</DescDt>
-              <DescDd>
-                <DescP>{productData?.delivery}</DescP>
-                <DescP2>
-                  23시 전 주문 시 내일 아침 7시 전 도착 (대구·부산·울산 샛별배송
-                  운영시간 별도 확인)
-                </DescP2>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>판매자</DescDt>
-              <DescDd>
-                <DescP>{productData?.seller}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>포장타입</DescDt>
-              <DescDd>
-                <DescP>{productData?.deliveryType}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>판매단위</DescDt>
-              <DescDd>
-                <DescP>{productData?.salesUnit}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>중량/용량</DescDt>
-              <DescDd>
-                <DescP>{productData?.volume}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>원산지</DescDt>
-              <DescDd>
-                <DescP>{productData?.origin}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>알레르기정보</DescDt>
-              <DescDd>
-                <DescP>{productData?.allergy}</DescP>
-              </DescDd>
-            </DescDl>
-            <DescDl>
-              <DescDt>유통기한(또는 소비기한)정보</DescDt>
-              <DescDd>
-                <DescP>{productData?.shelfLife}</DescP>
-              </DescDd>
-            </DescDl>
-          </Desc>
-          <ProductSelect>
-            <ProductBox>
-              <ProductDl>
-                <ProductDt>상품선택</ProductDt>
-                <ProductDiv>
-                  <ProductName>
-                    <ProductSpan>{productData?.goodsName}</ProductSpan>
-                  </ProductName>
-                  <CounterBox>
-                    <Counter>
-                      <CounterDown onClick={onDecrease}></CounterDown>
-                      <Num>{number}</Num>
-                      <CounterUp onClick={onIncrease}></CounterUp>
-                    </Counter>
-                    <div>
-                      <PriceSpan>
-                        {price}
-                        <span>원</span>
-                      </PriceSpan>
-                    </div>
-                  </CounterBox>
-                </ProductDiv>
-              </ProductDl>
-            </ProductBox>
-            <TotalPriceBox>
-              <Box>
-                <InnerBox>
-                  <PriceSpans>총 상품금액</PriceSpans>
-                  <TotalPrice> {totalPrice}</TotalPrice>
-                  <WonSpan>원</WonSpan>
-                </InnerBox>
-                <DivFlex>
-                  <YellowSpan>적립</YellowSpan>
-                  <Loginspan>로그인후,적립 혜택 제공</Loginspan>
-                </DivFlex>{" "}
-              </Box>
-            </TotalPriceBox>
-            <ButtonBox>
-              <HeartButton>
-                <HeartSpan>
-                  <HeartImg src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yNS44MDcgNy44NjNhNS43NzcgNS43NzcgMCAwIDAtOC4xNzIgMEwxNiA5LjQ5N2wtMS42MzUtMS42MzRhNS43NzkgNS43NzkgMCAxIDAtOC4xNzMgOC4xNzJsMS42MzQgMS42MzQgNy40NjYgNy40NjdhMSAxIDAgMCAwIDEuNDE1IDBzMCAwIDAgMGw3LjQ2Ni03LjQ2N2gwbDEuNjM0LTEuNjM0YTUuNzc3IDUuNzc3IDAgMCAwIDAtOC4xNzJ6IiBzdHJva2U9IiM1RjAwODAiIHN0cm9rZS13aWR0aD0iMS42IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" />
-                </HeartSpan>
-              </HeartButton>
-              <BellButton>
-                <BellSpan>
-                  <BellImg src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIHN0cm9rZT0iI0NDQyIgc3Ryb2tlLXdpZHRoPSIxLjYiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZD0iTTEyLjY2NiAyM2EzLjMzMyAzLjMzMyAwIDEgMCA2LjY2NiAwIi8+CiAgICAgICAgPHBhdGggZD0iTTI1Ljk5OCAyMi43MzhINmwuMDEzLS4wM2MuMDc2LS4xMzUuNDcxLS43MDQgMS4xODYtMS43MDlsLjc1LTEuMDV2LTYuNjM1YzAtNC40ODUgMy40MzgtOC4xNCA3Ljc0MS04LjMwOEwxNiA1YzQuNDQ2IDAgOC4wNSAzLjcyMiA4LjA1IDguMzE0djYuNjM0bDEuNzA3IDIuNDExYy4xNzMuMjUzLjI1NC4zOC4yNDIuMzh6IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAgIDwvZz4KPC9zdmc+Cg==" />
-                </BellSpan>
-              </BellButton>
-              <AddDiv>
-                <AddButton>
-                  <AddSpan onClick={onPostCart}>장바구니 담기</AddSpan>
-                </AddButton>
-              </AddDiv>
-            </ButtonBox>
-          </ProductSelect>
-        </Inform>
-      </Articles>
-      <Review />
-    </Page>
+                {/* <NameP>맛이 차오른 제철 가리비</NameP> */}
+              </FlexColumn>
+            </div>
+            <Price>
+              <PriceSpan1>{priceString}</PriceSpan1>
+              <PriceSpan2>원</PriceSpan2>
+            </Price>
+            <Accumulate>로그인 후, 적립 헤택이 제공됩니다.</Accumulate>
+            <Desc>
+              <DescDl>
+                <DescDt>배송</DescDt>
+                <DescDd>
+                  <DescP>{productData?.delivery}</DescP>
+                  <DescP2>
+                    23시 전 주문 시 내일 아침 7시 전 도착 (대구·부산·울산
+                    샛별배송 운영시간 별도 확인)
+                  </DescP2>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>판매자</DescDt>
+                <DescDd>
+                  <DescP>{productData?.seller}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>포장타입</DescDt>
+                <DescDd>
+                  <DescP>{productData?.deliveryType}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>판매단위</DescDt>
+                <DescDd>
+                  <DescP>{productData?.salesUnit}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>중량/용량</DescDt>
+                <DescDd>
+                  <DescP>{productData?.volume}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>원산지</DescDt>
+                <DescDd>
+                  <DescP>{productData?.origin}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>알레르기정보</DescDt>
+                <DescDd>
+                  <DescP>{productData?.allergy}</DescP>
+                </DescDd>
+              </DescDl>
+              <DescDl>
+                <DescDt>유통기한(또는 소비기한)정보</DescDt>
+                <DescDd>
+                  <DescP>{productData?.shelfLife}</DescP>
+                </DescDd>
+              </DescDl>
+            </Desc>
+            <ProductSelect>
+              <ProductBox>
+                <ProductDl>
+                  <ProductDt>상품선택</ProductDt>
+                  <ProductDiv>
+                    <ProductName>
+                      <ProductSpan>{productData?.goodsName}</ProductSpan>
+                    </ProductName>
+                    <CounterBox>
+                      <Counter>
+                        <CounterDown onClick={onDecrease}></CounterDown>
+                        <Num>{number}</Num>
+                        <CounterUp onClick={onIncrease}></CounterUp>
+                      </Counter>
+                      <div>
+                        <PriceSpan>
+                          {price}
+                          <span>원</span>
+                        </PriceSpan>
+                      </div>
+                    </CounterBox>
+                  </ProductDiv>
+                </ProductDl>
+              </ProductBox>
+              <TotalPriceBox>
+                <Box>
+                  <InnerBox>
+                    <PriceSpans>총 상품금액</PriceSpans>
+                    <TotalPrice> {totalPrice}</TotalPrice>
+                    <WonSpan>원</WonSpan>
+                  </InnerBox>
+                  <DivFlex>
+                    <YellowSpan>적립</YellowSpan>
+                    <Loginspan>로그인후,적립 혜택 제공</Loginspan>
+                  </DivFlex>{" "}
+                </Box>
+              </TotalPriceBox>
+              <ButtonBox>
+                <HeartButton>
+                  <HeartSpan>
+                    <HeartImg src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yNS44MDcgNy44NjNhNS43NzcgNS43NzcgMCAwIDAtOC4xNzIgMEwxNiA5LjQ5N2wtMS42MzUtMS42MzRhNS43NzkgNS43NzkgMCAxIDAtOC4xNzMgOC4xNzJsMS42MzQgMS42MzQgNy40NjYgNy40NjdhMSAxIDAgMCAwIDEuNDE1IDBzMCAwIDAgMGw3LjQ2Ni03LjQ2N2gwbDEuNjM0LTEuNjM0YTUuNzc3IDUuNzc3IDAgMCAwIDAtOC4xNzJ6IiBzdHJva2U9IiM1RjAwODAiIHN0cm9rZS13aWR0aD0iMS42IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K" />
+                  </HeartSpan>
+                </HeartButton>
+                <BellButton>
+                  <BellSpan>
+                    <BellImg src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIHN0cm9rZT0iI0NDQyIgc3Ryb2tlLXdpZHRoPSIxLjYiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZD0iTTEyLjY2NiAyM2EzLjMzMyAzLjMzMyAwIDEgMCA2LjY2NiAwIi8+CiAgICAgICAgPHBhdGggZD0iTTI1Ljk5OCAyMi43MzhINmwuMDEzLS4wM2MuMDc2LS4xMzUuNDcxLS43MDQgMS4xODYtMS43MDlsLjc1LTEuMDV2LTYuNjM1YzAtNC40ODUgMy40MzgtOC4xNCA3Ljc0MS04LjMwOEwxNiA1YzQuNDQ2IDAgOC4wNSAzLjcyMiA4LjA1IDguMzE0djYuNjM0bDEuNzA3IDIuNDExYy4xNzMuMjUzLjI1NC4zOC4yNDIuMzh6IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAgIDwvZz4KPC9zdmc+Cg==" />
+                  </BellSpan>
+                </BellButton>
+                <AddDiv>
+                  <AddButton>
+                    <AddSpan onClick={onPostCart}>장바구니 담기</AddSpan>
+                  </AddButton>
+                </AddDiv>
+              </ButtonBox>
+            </ProductSelect>
+          </Inform>
+        </Articles>
+        <Review />
+      </Page>
+    </Layout>
   );
 };
 

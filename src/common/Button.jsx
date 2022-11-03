@@ -12,8 +12,8 @@ export default Button;
 
 const Stbutton = styled.button`
   border-radius: 4px;
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 15px;
   color: #512772;
   border: 1px solid #512772;
   width: ${(props) => props.width};

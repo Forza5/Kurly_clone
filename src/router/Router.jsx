@@ -8,9 +8,12 @@ import PostCard from "../common/PostCard";
 import ModalBasic from "../common/ModalBasic";
 import Detail from "../pages/detail/Detail";
 import Review from "../pages/detail/Review";
+import ScrollToTop from "../pages/scroll/Scroll";
+
 const Router = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

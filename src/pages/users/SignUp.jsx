@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import Button from "../../common/Button";
@@ -14,47 +14,54 @@ import { Postcode } from "react-daum-postcode/lib/loadPostcode";
 import PopupDom from "./PopupDom";
 import PopupPostCode from "./PopupPostCode";
 import "../css/signup.css";
+import Layout from "../../common/Layout";
 
 const SignUp = () => {
-  const checkBoxUrl =
-    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgc3Ryb2tlPSIjREREIj4KICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjY5LjAwMDAwMCwgLTEwOTAuMDAwMDAwKSB0cmFuc2xhdGUoMTAwLjAwMDAwMCwgOTM2LjAwMDAwMCkgdHJhbnNsYXRlKDU1My4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMS41Ii8+CiAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K";
-  const colorcheckBoxUrl =
-    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGc+CiAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgPGc+CiAgICAgICAgICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3Ni4wMDAwMDAsIC0xMDkwLjAwMDAwMCkgdHJhbnNsYXRlKDEwMC4wMDAwMDAsIDkzNi4wMDAwMDApIHRyYW5zbGF0ZSg2MC4wMDAwMDAsIDE0Mi4wMDAwMDApIHRyYW5zbGF0ZSgxNi4wMDAwMDAsIDEyLjAwMDAwMCkiPgogICAgICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMiIgZmlsbD0iIzVGMDA4MCIvPgogICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Ik03IDEyLjY2N0wxMC4zODUgMTYgMTggOC41Ii8+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K";
-  const [checked, setChecked] = useState(false);
-
-  const [check, setCheck] = useState({
-    tos: false,
-    privacy: false,
-    privacyOptional: false,
-    freeDelivery: false,
-    SMS: false,
-    email: false,
-    adult: false,
-  });
-
-  const [checkList, setCheckList] = useState([]);
-
   // 체크박스 전체선택시 모두선택 체크박스 활성화시키기
-  const handleCheck = (e) => {
-    e.target.checked
-      ? setCheckList([...checkList, e.target.name])
-      : setCheckList(checkList.filter((el) => el !== e.target.name));
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const allAgreeHandler = (checked) => {
+    setIsAllChecked(!isAllChecked);
+    if (checked) {
+      setCheckedItems([
+        ...checkedItems,
+        "provision",
+        "privacy",
+        "privacy2",
+        "free",
+        "sms",
+        "email",
+        "age",
+      ]);
+    } else if (
+      (!checked && checkedItems.includes("provision")) ||
+      (!checked && checkedItems.includes("privacy")) ||
+      (!checked && checkedItems.includes("privacy2")) ||
+      (!checked && checkedItems.includes("free")) ||
+      (!checked && checkedItems.includes("sms")) ||
+      (!checked && checkedItems.includes("email")) ||
+      (!checked && checkedItems.includes("age"))
+    ) {
+      setCheckedItems([]);
+    }
   };
 
-  // 전체체크 선택시 전체 선택 or 전체해제
-  const checkAllHandler = (e) => {
-    e.target.checked
-      ? setCheckList([
-          "tos",
-          "privacy",
-          "privacyOptional",
-          "freeDelivery",
-          "SMS",
-          "email",
-          "adult",
-        ])
-      : setCheckList([]);
+  const agreeHandler = (checked, value) => {
+    if (checked) {
+      setCheckedItems([...checkedItems, value]);
+    } else if (!checked && checkedItems.includes(value)) {
+      setCheckedItems(checkedItems.filter((el) => el !== value));
+    }
   };
+
+  useEffect(() => {
+    if (checkedItems.length >= 7) {
+      setIsAllChecked(true);
+    } else {
+      setIsAllChecked(false);
+    }
+  }, [checkedItems]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -235,388 +242,396 @@ const SignUp = () => {
   };
 
   return (
-    <Container>
-      <StTitle>회원가입</StTitle>
-      <div>
-        <StLine>
-          <Span>*</Span>
-          필수입력사항
-        </StLine>
-
-        <StRow>
-          <StLabel>
-            아이디<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <div>
-              <StInput
-                type="text"
-                placeholder="아이디를 입력해주세요"
-                onChange={onChangeId}
-              />
-              {id.length > 0 && (
-                <span className={`message ${isId ? "success" : "error"}`}>
-                  {idMessage}
-                </span>
-              )}
-            </div>
-          </StFormbox>
-
-          <Button onClick={onIdHandler} width="150px">
-            중복확인
-          </Button>
-        </StRow>
-        <StRow>
-          <StLabel>
-            비밀번호<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <StInput
-              type="password"
-              placeholder="비밀번호를 입력해주세요"
-              onChange={onChangePw}
-            />
-            {pw.length > 0 && (
-              <span className={`message ${isPw ? "success" : "error"}`}>
-                {pwMessage}
-              </span>
-            )}
-          </StFormbox>
-        </StRow>
-        <StRow>
-          <StLabel>
-            비밀번호확인<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <StInput
-              type="password"
-              placeholder="비밀번호를 한번 더 입력해주세요"
-              onChange={onChangePwConfirm}
-            />
-          </StFormbox>
-        </StRow>
-        <StRow>
-          <StLabel>
-            이름<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <StInput
-              placeholder="이름을 입력해주세요"
-              onChange={onChangeName}
-            />
-          </StFormbox>
-        </StRow>
-        <StRow>
-          <StLabel>
-            이메일<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <StInput
-              type="email"
-              placeholder="예: marketkurly@kurly.com"
-              onChange={onChangeEmail}
-            />
-            {email.length > 0 && (
-              <span className={`message ${isEmail ? "success" : "error"}`}>
-                {emailMessage}
-              </span>
-            )}
-          </StFormbox>
-
-          <Button onClick={redundantCheck} width="150px">
-            중복확인
-          </Button>
-        </StRow>
-        {certi ? (
+    <Layout>
+      <Container>
+        <StTitle>회원가입</StTitle>
+        <div>
+          <StLine>
+            <Span>*</Span>
+            필수입력사항
+          </StLine>
           <StRow>
-            <StLabel></StLabel>
+            <StLabel>
+              아이디<Span>*</Span>
+            </StLabel>
             <StFormbox>
-              <StInput
-                placeholder="3분내에 인증번호를 입력해주세요"
-                onChange={onChangeCheckCode}
-              />
+              <div>
+                <StInput
+                  type="text"
+                  placeholder="아이디를 입력해주세요"
+                  onChange={onChangeId}
+                />
+                {id.length > 0 && (
+                  <span className={`message ${isId ? "success" : "error"}`}>
+                    {idMessage}
+                  </span>
+                )}
+              </div>
             </StFormbox>
-            <Button onClick={onCodeCheck} width="150px">
-              인증번호 확인
+
+            <Button onClick={onIdHandler} width="120px">
+              중복확인
             </Button>
           </StRow>
-        ) : null}
-        <StRow>
-          <StLabel>
-            휴대폰<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <StInput
-              className="phone"
-              type="number"
-              placeholder="숫자만 입력해주세요."
-              onChange={onChangePhoneNum}
-              onkeypress="checkNumber(event)"
-            />
-            {phoneNum.length > 0 && (
-              <span className={`message ${isPhoneNum ? "success" : "error"}`}>
-                {phoneNumMessage}
-              </span>
-            )}
-          </StFormbox>
-          <Button width="150px">인증번호 받기</Button>
-        </StRow>
-        <StRow>
-          <StLabel>
-            주소<Span>*</Span>
-          </StLabel>
-          <StFormbox>
-            <Button onClick={openPostCode} width="100%" height="50px">
-              <span>
-                <Img
-                  src="https://res.kurly.com/pc/service/cart/2007/ico_search.svg"
-                  alt="주소검색"
-                />
-                주소검색
-              </span>
-            </Button>
-            <StInput defaultValue={address} />
-            <StInput
-              onChange={onChangeDetailAddress}
-              placeholder="나머지 주소를 입력해주세요"
-            />
-            <div id="popupDom">
-              {isPopupOpen && (
-                <PopupDom>
-                  <PopupPostCode
-                    onClose={closePostCode}
-                    setAddress={setAddress}
-                  />
-                </PopupDom>
-              )}
-            </div>
-            <p>배송지에 따라 상품 정보가 달라질 수 있습니다.</p>
-          </StFormbox>
-        </StRow>
-        <StRow>
-          <StLabel>성별</StLabel>
-          <StBetween>
-            <StRadio type="radio" name="gender" value="male" />
-            <span style={{ verticalAlign: "middle" }}>남자</span>
-            <StRadio type="radio" name="gender" value="female" />
-            <span style={{ verticalAlign: "middle" }}>여자</span>
-            <StRadio type="radio" name="gender" value="none" />
-            <span style={{ verticalAlign: "middle" }}>선택안함</span>
-          </StBetween>
-        </StRow>
-        <StRow>
-          <StLabel>생년월일</StLabel>
-          <StFormbox>
-            <StDate>
-              <div>
-                <StDateInput
-                  onChange={onChangeYear}
-                  type="text"
-                  placeholder="YYYY"
-                />
-              </div>
-              <span>/</span>
-              <div>
-                <StDateInput
-                  onChange={onChangeMonth}
-                  type="text"
-                  placeholder="MM"
-                />
-              </div>
-              <span>/</span>
-              <div>
-                <StDateInput
-                  onChange={onChangeDate}
-                  type="text"
-                  placeholder="DD"
-                />
-              </div>
-            </StDate>
-          </StFormbox>
-        </StRow>
-        <StRow>
-          <StLabel style={{ height: "139px" }}>추가입력 사항</StLabel>
-          <div>
-            <StBetween style={{ width: "95%" }}>
-              <StRadio type="radio" name="addtion" />
-              <span>친구초대 추천인 아이디</span>
-              <StRadio type="radio" name="addtion" />
-              <span>참여 이벤트명</span>{" "}
-            </StBetween>
+          <StRow>
+            <StLabel>
+              비밀번호<Span>*</Span>
+            </StLabel>
             <StFormbox>
-              <StInput placeholder="추천인 아이디를 입력해주세요." />
-              <p>
-                가입 후 7일 내 첫 주문 배송완료 시, 친구초대 이벤트 적립금이
-                지급됩니다.
-              </p>
+              <StInput
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
+                onChange={onChangePw}
+              />
+              {pw.length > 0 && (
+                <span className={`message ${isPw ? "success" : "error"}`}>
+                  {pwMessage}
+                </span>
+              )}
             </StFormbox>
-          </div>
-        </StRow>
-        {/* 추가입력창 띄우는건 나중에;; */}
-        <StRow></StRow>
+          </StRow>
+          <StRow>
+            <StLabel>
+              비밀번호확인<Span>*</Span>
+            </StLabel>
+            <StFormbox>
+              <StInput
+                type="password"
+                placeholder="비밀번호를 한번 더 입력해주세요"
+                onChange={onChangePwConfirm}
+              />
+            </StFormbox>
+          </StRow>
+          <StRow>
+            <StLabel>
+              이름<Span>*</Span>
+            </StLabel>
+            <StFormbox>
+              <StInput
+                placeholder="이름을 입력해주세요"
+                onChange={onChangeName}
+              />
+            </StFormbox>
+          </StRow>
+          <StRow>
+            <StLabel>
+              이메일<Span>*</Span>
+            </StLabel>
+            <StFormbox>
+              <StInput
+                type="email"
+                placeholder="예: marketkurly@kurly.com"
+                onChange={onChangeEmail}
+              />
+              {email.length > 0 && (
+                <span className={`message ${isEmail ? "success" : "error"}`}>
+                  {emailMessage}
+                </span>
+              )}
+            </StFormbox>
 
-        <StLine />
-        <Lower>
-          <StColumn>
-            <StLabel>이용약관동의</StLabel>
-          </StColumn>
-          <StColumn>
+            <Button onClick={redundantCheck} width="120px">
+              중복확인
+            </Button>
+          </StRow>
+          {certi ? (
             <StRow>
-              <label>
-                <StCheckbox
-                  type="checkbox"
-                  name="checkAll"
-                  checked={checkList.length === 7 ? true : false}
-                  onChange={checkAllHandler}
+              <StLabel></StLabel>
+              <StFormbox>
+                <StInput
+                  placeholder="3분내에 인증번호를 입력해주세요"
+                  onChange={onChangeCheckCode}
                 />
-                <img
-                  src={checkList ? colorcheckBoxUrl : checkBoxUrl}
-                  alt="전체동의체크"
-                />
-                <span>전체 동의합니다.</span>
-              </label>
-
-              <p>
-                선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
-                이용할 수 있습니다.
-              </p>
+              </StFormbox>
+              <Button onClick={onCodeCheck} width="120px">
+                인증번호 확인
+              </Button>
             </StRow>
-            <StRow>
-              <StHorizontal>
+          ) : null}
+          <StRow>
+            <StLabel>
+              휴대폰<Span>*</Span>
+            </StLabel>
+            <StFormbox>
+              <StInput
+                className="phone"
+                type="tel"
+                placeholder="숫자만 입력해주세요."
+                onChange={onChangePhoneNum}
+                onkeypress="checkNumber(event)"
+              />
+              {phoneNum.length > 0 && (
+                <span className={`message ${isPhoneNum ? "success" : "error"}`}>
+                  {phoneNumMessage}
+                </span>
+              )}
+            </StFormbox>
+            <Button width="120px" height="48px">
+              인증번호 받기
+            </Button>
+          </StRow>
+          <StRow>
+            <StLabel>
+              주소<Span>*</Span>
+            </StLabel>
+            <StFormbox>
+              <Button onClick={openPostCode} width="100%" height="50px">
+                <span>
+                  <Img
+                    src="https://res.kurly.com/pc/service/cart/2007/ico_search.svg"
+                    alt="주소검색"
+                  />
+                  주소검색
+                </span>
+              </Button>
+              <StInput defaultValue={address} style={{ margin: "10px 0" }} />
+              <StInput
+                onChange={onChangeDetailAddress}
+                placeholder="나머지 주소를 입력해주세요"
+              />
+              <div id="popupDom">
+                {isPopupOpen && (
+                  <PopupDom>
+                    <PopupPostCode
+                      onClose={closePostCode}
+                      setAddress={setAddress}
+                    />
+                  </PopupDom>
+                )}
+              </div>
+              <AddCaution>
+                배송지에 따라 상품 정보가 달라질 수 있습니다.
+              </AddCaution>
+            </StFormbox>
+          </StRow>
+          <StRow>
+            <StLabel>성별</StLabel>
+            <StBetween>
+              <StRadioFlex>
+                <StRadio type="radio" name="gender" value="male" />
+                <RadioLabel style={{ verticalAlign: "middle" }}>
+                  남자
+                </RadioLabel>
+              </StRadioFlex>
+              <StRadioFlex>
+                <StRadio type="radio" name="gender" value="female" />
+                <RadioLabel style={{ verticalAlign: "middle" }}>
+                  여자
+                </RadioLabel>
+              </StRadioFlex>
+              <StRadioFlex>
+                <StRadio type="radio" name="gender" value="none" />
+                <RadioLabel style={{ verticalAlign: "middle" }}>
+                  선택안함
+                </RadioLabel>
+              </StRadioFlex>
+            </StBetween>
+          </StRow>
+          <StRow>
+            <StLabel>생년월일</StLabel>
+            <StFormbox>
+              <StDate>
                 <div>
-                  <label>
-                    <StCheckbox
-                      type="checkbox"
-                      name="tos"
-                      checked={checkList.includes("tos") ? true : false}
-                      onChange={handleCheck}
-                    />
-                    <img
-                      src={checkList.tos ? colorcheckBoxUrl : checkBoxUrl}
-                      alt="이용약관 동의"
-                    />
-                    이용약관 동의 <span>(필수)</span>
-                  </label>
+                  <StDateInput
+                    onChange={onChangeYear}
+                    type="text"
+                    placeholder="YYYY"
+                    maxLength={4}
+                  />
                 </div>
-
-                <div>약관보기 〉</div>
-              </StHorizontal>
-            </StRow>
-            <StRow>
-              <StHorizontal>
+                <span>/</span>
                 <div>
-                  <label>
-                    <StCheckbox
-                      type="checkbox"
-                      name="privacy"
-                      checked={checkList.includes("privacy") ? true : false}
-                      onChange={handleCheck}
-                    />
-                    <img
-                      src={checkList.privacy ? colorcheckBoxUrl : checkBoxUrl}
-                      alt="개인정보 수집∙이용 동의(필수)"
-                    />
-                    개인정보 수집∙이용 동의 <span>(필수)</span>
-                  </label>
+                  <StDateInput
+                    onChange={onChangeMonth}
+                    type="text"
+                    placeholder="MM"
+                    maxLength={2}
+                  />
                 </div>
-
-                <div>약관보기 〉</div>
-              </StHorizontal>
-            </StRow>
-            <StRow>
-              <StHorizontal>
+                <span>/</span>
                 <div>
-                  <label>
-                    <StCheckbox
-                      type="checkbox"
-                      name="privacyOptinal"
-                      checked={
-                        checkList.includes("privacyOptional") ? true : false
-                      }
-                      onChange={handleCheck}
-                    />
-                    <img
-                      src={
-                        checkList.privacyOptional
-                          ? colorcheckBoxUrl
-                          : checkBoxUrl
-                      }
-                      alt="개인정보 수집∙이용 동의(선택)"
-                    />
-                    개인정보 수집∙이용 동의 <span>(선택)</span>
-                  </label>
+                  <StDateInput
+                    onChange={onChangeDate}
+                    type="text"
+                    placeholder="DD"
+                    maxLength={2}
+                  />
                 </div>
+              </StDate>
+            </StFormbox>
+          </StRow>
+          {/* <StRow>
+            <StLabel style={{ height: "139px" }}>추가입력 사항</StLabel>
+            <div>
+              <StBetween style={{ width: "95%" }}>
+                <StRadio type="radio" name="addtion" />
+                <span>친구초대 추천인 아이디</span>
+                <StRadio type="radio" name="addtion" />
+                <span>참여 이벤트명</span>{" "}
+              </StBetween>
+              <StFormbox>
+                <StInput placeholder="추천인 아이디를 입력해주세요." />
+                <p>
+                  가입 후 7일 내 첫 주문 배송완료 시, 친구초대 이벤트 적립금이
+                  지급됩니다.
+                </p>
+              </StFormbox>
+            </div>
+          </StRow>
+          {/* 추가입력창 띄우는건 나중에;; */}
+          <StRow></StRow>
+          <StLine />
+          <Lower>
+            <StColumn>
+              <StLabel>
+                이용약관동의 <Span>*</Span>
+              </StLabel>
+            </StColumn>
+            <StColumn>
+              <StRow style={{ flexDirection: "column" }}>
+                <AccessLabel>
+                  <StCheckbox
+                    type="checkbox"
+                    checked={isAllChecked}
+                    onChange={(e) =>
+                      allAgreeHandler(e.currentTarget.checked, e.target.value)
+                    }
+                  />
 
-                <div>약관보기 〉</div>
-              </StHorizontal>
-            </StRow>
-            <StRow>
-              <label>
-                <StCheckbox
-                  type="checkbox"
-                  name="freeDelivery"
-                  checked={checkList.includes("freeDelivery") ? true : false}
-                  onChange={handleCheck}
-                />
-                <img
-                  src={checkList.freeDelivery ? colorcheckBoxUrl : checkBoxUrl}
-                  alt="무료배송, 할인쿠폰 등 헤택/정보 수신 동의(선택)"
-                />
-                무료배송, 할인쿠폰 등 헤택/정보 수신 동의 <span>(선택)</span>
-              </label>
-            </StRow>
-            <StRow>
-              <StCheckbox
-                type="checkbox"
-                name="SMS"
-                checked={checkList.includes("SMS") ? true : false}
-                onChange={handleCheck}
-              />
-              <img
-                src={checkList.SMS ? colorcheckBoxUrl : checkBoxUrl}
-                alt="SMS"
-              />
+                  <AccessTitle>전체 동의합니다.</AccessTitle>
+                </AccessLabel>
 
-              <span>SMS</span>
-              <StCheckbox
-                type="checkbox"
-                name="이메일"
-                checked={checkList.includes("email") ? true : false}
-                onChange={handleCheck}
-              />
-              <img
-                src={checkList.email ? colorcheckBoxUrl : checkBoxUrl}
-                alt="이메일"
-              />
+                <PadLeft>
+                  선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를
+                  이용할 수 있습니다.
+                </PadLeft>
+              </StRow>
+              <StRow>
+                <StHorizontal>
+                  <div>
+                    <AccessLabel>
+                      <StCheckbox
+                        type="checkbox"
+                        value="provision"
+                        checked={
+                          checkedItems.includes("provision") ? true : false
+                        }
+                        onChange={(e) =>
+                          agreeHandler(e.currentTarget.checked, e.target.value)
+                        }
+                      />
+                      이용약관 동의 <SpanSub>(필수)</SpanSub>
+                    </AccessLabel>
+                  </div>
 
-              <span>이메일</span>
-            </StRow>
-            <p>
-              동의 시 한 달간 [5%적립] + [2만원 이상] 무료배송 첫 주문 후 안내
-            </p>
+                  <WatchUse>약관보기 〉</WatchUse>
+                </StHorizontal>
+              </StRow>
+              <StRow>
+                <StHorizontal>
+                  <div>
+                    <AccessLabel>
+                      <StCheckbox
+                        type="checkbox"
+                        value="privacy"
+                        checked={
+                          checkedItems.includes("privacy") ? true : false
+                        }
+                        onChange={(e) =>
+                          agreeHandler(e.currentTarget.checked, e.target.value)
+                        }
+                      />
+                      개인정보 수집∙이용 동의 <SpanSub>(필수)</SpanSub>
+                    </AccessLabel>
+                  </div>
 
-            <StRow>
-              <label>
-                <StCheckbox
-                  type="checkbox"
-                  name="adult"
-                  checked={checkList.includes("adult") ? true : false}
-                  onChange={handleCheck}
-                />
-                <img
-                  src={checkList.adult ? colorcheckBoxUrl : checkBoxUrl}
-                  alt="본인은 만 14세 이상입니다."
-                />
-                본인은 만 14세 이상입니다.<span>(필수)</span>
-              </label>
-            </StRow>
-          </StColumn>
-        </Lower>
-      </div>
-      <>
-        <StButton onClick={onCreateHandler}>가입하기</StButton>
-      </>
-    </Container>
+                  <WatchUse>약관보기 〉</WatchUse>
+                </StHorizontal>
+              </StRow>
+              <StRow>
+                <StHorizontal>
+                  <div>
+                    <AccessLabel>
+                      <StCheckbox
+                        type="checkbox"
+                        value="privacy2"
+                        checked={
+                          checkedItems.includes("privacy2") ? true : false
+                        }
+                        onChange={(e) =>
+                          agreeHandler(e.currentTarget.checked, e.target.value)
+                        }
+                      />
+                      개인정보 수집∙이용 동의 <SpanSub>(선택)</SpanSub>
+                    </AccessLabel>
+                  </div>
+
+                  <WatchUse>약관보기 〉</WatchUse>
+                </StHorizontal>
+              </StRow>
+              <StRow>
+                <AccessLabel>
+                  <StCheckbox
+                    type="checkbox"
+                    value="free"
+                    checked={checkedItems.includes("free") ? true : false}
+                    onChange={(e) =>
+                      agreeHandler(e.currentTarget.checked, e.target.value)
+                    }
+                  />
+                  무료배송, 할인쿠폰 등 헤택/정보 수신 동의{" "}
+                  <SpanSub>(선택)</SpanSub>
+                </AccessLabel>
+              </StRow>
+              <StRow style={{ paddingLeft: "40px" }}>
+                <AccessDiv>
+                  <StCheckbox
+                    type="checkbox"
+                    value="sms"
+                    checked={checkedItems.includes("sms") ? true : false}
+                    onChange={(e) =>
+                      agreeHandler(e.currentTarget.checked, e.target.value)
+                    }
+                  />
+                  <span>SMS</span>
+                </AccessDiv>
+                <AccessDiv>
+                  <StCheckbox
+                    type="checkbox"
+                    value="email"
+                    checked={checkedItems.includes("email") ? true : false}
+                    onChange={(e) =>
+                      agreeHandler(e.currentTarget.checked, e.target.value)
+                    }
+                  />
+                  <span>이메일</span>
+                </AccessDiv>
+              </StRow>
+              <PlusCont>
+                동의 시 한 달간 [5%적립] + [2만원 이상] 무료배송 첫 주문 후 안내
+              </PlusCont>
+
+              <StRow>
+                <AccessLabel>
+                  <StCheckbox
+                    type="checkbox"
+                    value="age"
+                    checked={checkedItems.includes("age") ? true : false}
+                    onChange={(e) =>
+                      agreeHandler(e.currentTarget.checked, e.target.value)
+                    }
+                  />
+                  본인은 만 14세 이상입니다.<SpanSub>(필수)</SpanSub>
+                </AccessLabel>
+              </StRow>
+            </StColumn>
+          </Lower>
+        </div>
+        <CenterDiv>
+          <StButton onClick={onCreateHandler}>가입하기</StButton>
+        </CenterDiv>
+      </Container>
+    </Layout>
   );
 };
 
@@ -638,7 +653,6 @@ const StTitle = styled.h2`
 const StRow = styled.div`
   display: flex;
   padding: 10px 20px;
-
   width: 100%;
   .div {
   }
@@ -648,6 +662,7 @@ const StLabel = styled.div`
   width: 139px;
   padding-top: 12px;
   font-weight: 500;
+  font-size: 14px;
 `;
 //모든 인풋
 const StInput = styled.input`
@@ -659,19 +674,24 @@ const StInput = styled.input`
   border: 1px solid rgb(221, 221, 221);
   font-weight: 400;
   font-size: 16px;
+  outline: 0;
+  :focus {
+    border: 1px solid #000;
+  }
 `;
 //이용약관동의 라벨
 const StColumn = styled.div`
-  padding: 10px 20px;
+  padding-top: 15px;
 `;
 //생년월일 테두리
 const StDate = styled.div`
   display: flex;
-  border: 1px solid gray;
+  align-items: center;
+  border: 1px solid rgb(221, 221, 221);
   border-radius: 4px;
   padding: 10px;
-  height: 40px;
-  width: 330px;
+  height: 46px;
+  width: 100%;
 `;
 //생년월일 인풋
 const StDateInput = styled.input`
@@ -702,16 +722,11 @@ const StRadio = styled.input`
 `;
 //이용약관 동의 체크박스
 const StCheckbox = styled.input`
-  background-color: red;
   appearance: none;
   width: 24px;
   height: 24px;
   overflow: hidden;
-  position: absolute;
-  clip: rect(0px, 0px, 0px, 0px);
-  clip-path: inset(50%);
-  width: 1px;
-  height: 1px;
+  margin-right: 10px;
 `;
 //약관동의 부분
 const Lower = styled.div`
@@ -721,7 +736,6 @@ const Lower = styled.div`
 const StFormbox = styled.div`
   margin-right: 12px;
   width: 350px;
-
   .message {
     font-size: 13px;
     margin-top: -4px;
@@ -731,6 +745,13 @@ const StFormbox = styled.div`
       color: rgb(240, 63, 64);
     }
   }
+`;
+//라디오 flex
+const StRadioFlex = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(51, 51, 51);
 `;
 //수평선
 const StLine = styled.div`
@@ -749,12 +770,12 @@ const Img = styled.img`
 //가입하기 보라색 버튼
 const StButton = styled.button`
   border-radius: 4px;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 16px;
   text-align: center;
   color: rgb(255, 255, 255);
   border: 1px solid #512772;
-  width: 100%;
+  width: 240px;
   height: 54px;
   background-color: #512772;
   cursor: pointer;
@@ -764,7 +785,6 @@ const StButton = styled.button`
 const StHorizontal = styled.div`
   display: flex;
   flex-direction: row;
-
   justify-content: space-between;
   width: 100%;
 `;
@@ -777,4 +797,70 @@ const StBetween = styled.div`
   text-align: justify;
   justify-content: space-between;
   width: 50%;
+`;
+
+const AddCaution = styled.p`
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(102, 102, 102);
+`;
+
+const CenterDiv = styled.div`
+  text-align: center;
+  margin: 30px 0 60px 0;
+`;
+
+const RadioLabel = styled.label`
+  margin-left: 7px;
+`;
+
+const AccessLabel = styled.label`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(51, 51, 51);
+`;
+
+const AccessTitle = styled.span`
+  color: rgb(51, 51, 51);
+  font-weight: 500;
+  font-size: 18px;
+`;
+
+const PadLeft = styled.p`
+  padding-left: 36px;
+  font-size: 12px;
+  padding-top: 4px;
+  color: rgb(102, 102, 102);
+`;
+
+const WatchUse = styled.div`
+  color: rgb(95, 0, 128);
+  font-size: 14px;
+`;
+
+const AccessDiv = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(51, 51, 51);
+  :first-child {
+    margin-right: 80px;
+  }
+`;
+
+const PlusCont = styled.p`
+  color: rgb(95, 0, 128);
+  background: url("https://res.kurly.com/pc/service/common/2006/ico_sub_dot.svg")
+    0px 0px / 16px 20px no-repeat;
+  font-size: 12px;
+  margin-left: 74px;
+  padding-left: 16px;
+`;
+
+const SpanSub = styled.span`
+  display: inline-block;
+  margin-left: 5px;
+  color: rgb(153, 153, 153);
 `;
