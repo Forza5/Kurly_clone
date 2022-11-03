@@ -34,6 +34,7 @@ const Detail = () => {
   }, []);
   //state에서 값 불러오기
   const [productData] = useSelector((state) => state.goods?.data);
+
   //수량 증감
   const [number, setNumber] = useState(1);
   const onDecrease = () => {
@@ -47,6 +48,7 @@ const Detail = () => {
     userId: token?.userId,
     productId: productData?.goodsId,
     quantity: number,
+    productImage: productData?.goodsImage,
     price: productData?.goodsPrice,
     productName: productData?.goodsName,
   };
@@ -62,6 +64,15 @@ const Detail = () => {
   let totalPrice = sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   console.log(productData?.goodsImage);
+
+  // const newdata = () => {
+  //   const newArr = [];
+  //   for (const props of productData) {
+  //     console.log(props, productData[props]);
+  //   }
+  //   return newArr;
+  // };
+
   return (
     <Page>
       <Articles>

@@ -15,7 +15,6 @@ import updateList from "../../modules/cartSlice";
 const Cart = () => {
   const token = localStorage.getItem("token");
   const realToken = jwtDecode(token);
-  console.log(realToken);
   const dispatch = useDispatch();
   const [carts, setCarts] = useState(false);
 
@@ -27,24 +26,22 @@ const Cart = () => {
   };
 
   const productData = useSelector((state) => state.cart.data);
-  console.log("product", productData);
 
   useEffect(() => {
     dispatch(AcyncGetCart(realToken.userId));
-    console.log("cart");
   }, []);
 
   const onDeleteHandler = (cartId) => {
     dispatch(AcyncDeleteCart(cartId));
   };
   //상품금액
-  const newProductData = productData.map((item) => {
+  const newProductData = productData?.map((item) => {
     return item.price * item.quantity;
   });
-  console.log(newProductData);
-  const totalPrice = newProductData.reduce((acc, cur, i) => {
+
+  const totalPrice = newProductData?.reduce((acc, cur, i) => {
     return acc + cur;
-  });
+  }, 0);
   let result = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
@@ -159,7 +156,6 @@ const Cart = () => {
                   let price = sum
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                  console.log(price);
                   return (
                     <ul key={item.cartId}>
                       <GoodsList>

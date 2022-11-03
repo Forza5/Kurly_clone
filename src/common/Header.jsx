@@ -31,6 +31,7 @@ const Header = () => {
   const logOutHandler = () => {
     localStorage.removeItem("token");
   };
+  console.log(token.userId);
   //메인리스트
   const main1 = "선물하기";
   const main2 = "채소";
@@ -521,7 +522,7 @@ const Header = () => {
                     <HeartStyle />
                   </li>
                   <li>
-                    <CartStyle />
+                    <CartStyle  onClick={() => navigate(`/cart/${token?.userId}`)} />
                   </li>
                 </FlexIcon>
               </div>
@@ -754,7 +755,10 @@ const Header = () => {
                         <HeartStyle />
                       </li>
                       <li>
-                        <CartStyle />
+                        <CartStyle
+                          type="button"
+                          onClick={() => navigate(`/cart/${token?.userId}`)}
+                        />
                       </li>
                     </FlexIcon>
                   </div>

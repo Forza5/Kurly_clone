@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  AcyncGetMember,
   AcyncCreateMember,
   AcyncEmailCheck,
   AcyncCodeCheck,
@@ -64,7 +65,7 @@ const SignUp = () => {
   const [idMessage, setIdMessage] = useState("");
   //유효성검사
   const [isId, setIsId] = useState(false);
-
+  //아이디 중복체크
   const onChangeId = (e) => {
     const idRegex = /^[A-za-z0-9]{6,16}$/;
     setId(e.target.value);
@@ -212,8 +213,9 @@ const SignUp = () => {
     console.log("가입하기 버튼 누름");
     navigate("/members/login");
   };
+  //아이디 중복체크 버튼
   const onIdHandler = () => {
-    dispatch(AcyncCreateMember({ id: id }));
+    dispatch(AcyncGetMember({ id: id }));
   };
   const [certi, setCerti] = useState(false);
   const redundantCheck = () => {

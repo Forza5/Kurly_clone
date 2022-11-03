@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 
 import prev_color from "../pages/img/prev_btn_color.svg";
 
-
 const PostCard = ({ number }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -70,15 +69,20 @@ const PostCard = ({ number }) => {
                 <PriceContainer>
                   <PriceColumn>
                     <div>
-                      <Discount>{item.goodsSale}%</Discount>
+                      <Discount>
+                        {item.goodsSale ? item.goodsSale + "%" : null}
+                      </Discount>
                       <Price>
-                        {(item.goodsPrice * item.goodsSale) / 100}
+                        {item.goodsSale
+                          ? item.goodsPrice -
+                            (item.goodsPrice * item.goodsSale) / 100
+                          : item.goodsPrice}
                         <span>원</span>
                       </Price>
                     </div>
                     <PriceUndiscounted>
-                      {item.Price}
-                      <span>원</span>
+                      {item.goodsSale ? item.goodsPrice + "원" : null}
+                      <span></span>
                     </PriceUndiscounted>
                   </PriceColumn>
                 </PriceContainer>
