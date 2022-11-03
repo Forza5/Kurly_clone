@@ -1,12 +1,13 @@
 /* 모달창을 화면 중앙. 최상단에 노출 */
 .presentation {
+  background-color: red;
   z-index: 1300;
-  inset: 0px;
-  position: fixed;
+  /* inset: 0px;
+  position: absolute;
   top: 50%;
   left: 50%;
   transition: translateX(-50);
-  margin: 0 auto;
+  margin: 0 auto; */
 }
 .innerPresentation {
   opacity: 1;

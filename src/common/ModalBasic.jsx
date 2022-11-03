@@ -61,7 +61,7 @@ function ModalBasic({ setModalOpen, paramId }) {
   console.log(myPick);
   return (
     <div className="presentaion">
-      <div className="innerpresentation">
+      {/* <div className="innerpresentation">
         <div className="dialogContainer">
           <div className="dialogPaper">
             <div>
@@ -125,7 +125,7 @@ function ModalBasic({ setModalOpen, paramId }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

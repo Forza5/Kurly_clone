@@ -12,7 +12,6 @@ export const AcyncGetCart = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await cartApi.getCart(payload);
-      console.log(data.data.data);
       return thunkAPI.fulfillWithValue(data.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -25,7 +24,6 @@ export const AcyncPostCart = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await cartApi.postCart(payload);
-      console.log("cartSlice", data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -112,6 +110,7 @@ const cartSlice = createSlice({
     //카트에 담기
     [AcyncPostCart.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
+      alert("장바구니에 물건이 담겼습니다");
     },
     [AcyncPostCart.rejected]: (state, { payload }) => {
       state.isLoading = false;

@@ -21,12 +21,24 @@ export const AcyncLoginMember = createAsyncThunk(
     }
   }
 );
+//계정 중복확인
+export const AcyncGetMember = createAsyncThunk(
+  "members/getMember",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await membersApi.getMember(payload);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 //계정 생성
 export const AcyncCreateMember = createAsyncThunk(
   "members/createMember",
   async (payload, thunkAPI) => {
     try {
-      console.log("create", payload);
       const data = await membersApi.creatMember(payload);
       console.log(data.data.message);
       return thunkAPI.fulfillWithValue(data.data);
@@ -127,6 +139,17 @@ const membersSlice = createSlice({
       state.isLoading = false;
       state.error = payload;
       alert("로그인에 실패하였습니다.");
+    },
+    //회원중복체크
+    [AcyncGetMember.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.members = payload;
+      alert("사용가능한 ID입니다.");
+    },
+    [AcyncGetMember.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      state.error = payload;
+      alert("중복된 ID입니다.");
     },
     //회원가입
     [AcyncCreateMember.fulfilled]: (state, { payload }) => {

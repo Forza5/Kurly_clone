@@ -11,6 +11,7 @@ export const instance = axios.create({
 export const membersApi = {
   loginMember: (payload) => instance.post(`/members/login`, payload), //각각의 get,post,delete,patch입니다!
   creatMember: (members) => instance.post(`/members/signup`, members),
+  getMember: (members) => instance.post(`/members/signupp`, members),
   deleteMember: () =>
     instance.delete(`/members/login`, {
       headers: { Authorization: `Bearer ${token}` },

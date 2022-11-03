@@ -15,26 +15,94 @@ const Footer = () => {
         <div className="left_text">
           <TitleFlex>
             <H3Text>고객행복센터</H3Text>
-            <SpanText>365일 오전 7시 - 오후 7시</SpanText>
           </TitleFlex>
-          <div>
-            <H3Text2>1644-1107</H3Text2>
-          </div>
+          <H3Div>
+            <H3Text2>
+              1644-1107<SpanText>월~토요일 오전 7시 - 오후 6시</SpanText>
+            </H3Text2>
+          </H3Div>
           <UlFirst>
             <LiFirst>
-              <Link to="/" style={{ display: "block", color: "#333" }}>
+              <Link
+                to="/"
+                style={{
+                  display: "block",
+                  color: "#333",
+                  width: "140px",
+                  height: "40px",
+                  border: "1px solid rgb(226, 226, 226)",
+                  borderRadius: "3px",
+                  textAlign: "center",
+                  lineHeight: "40px",
+                  fontSize: "14px",
+                }}
+              >
                 카카오톡 문의
               </Link>
+              <ReviewText>
+                <ReviewLi>
+                  <ReviewP>월~토요일</ReviewP>
+                  <ReviewP>오전 7시 - 오후 6시</ReviewP>
+                </ReviewLi>
+                <ReviewLi>
+                  <ReviewP>일/공휴일</ReviewP>
+                  <ReviewP>오전 7시 - 오후 1시</ReviewP>
+                </ReviewLi>
+              </ReviewText>
             </LiFirst>
             <LiFirst>
-              <Link to="/" style={{ display: "block", color: "#333" }}>
+              <Link
+                to="/"
+                style={{
+                  display: "block",
+                  color: "#333",
+                  width: "140px",
+                  height: "40px",
+                  border: "1px solid rgb(226, 226, 226)",
+                  borderRadius: "3px",
+                  textAlign: "center",
+                  lineHeight: "40px",
+                  fontSize: "14px",
+                }}
+              >
                 1:1 문의
               </Link>
+              <ReviewText>
+                <ReviewLi
+                  style={{ flexDirection: "column", alignItems: "flex-start" }}
+                >
+                  <p>365일</p>
+                  <p>고객센터 운영시간에 순차적으로 답변드리겠습니다.</p>
+                </ReviewLi>
+              </ReviewText>
             </LiFirst>
             <LiFirst>
-              <Link to="/" style={{ display: "block", color: "#333" }}>
+              <Link
+                to="/"
+                style={{
+                  display: "block",
+                  color: "#333",
+                  width: "140px",
+                  height: "40px",
+                  border: "1px solid rgb(226, 226, 226)",
+                  borderRadius: "3px",
+                  textAlign: "center",
+                  lineHeight: "40px",
+                  fontSize: "14px",
+                }}
+              >
                 대량주문 문의
               </Link>
+              <ReviewText>
+                <ReviewLi>
+                  <ReviewP>월~금요일</ReviewP>
+                  <ReviewP>오전 9시 - 오후 6시</ReviewP>
+                </ReviewLi>
+                <ReviewLi>
+                  <ReviewP>점심시간</ReviewP>
+                  <ReviewP>낮 12시 - 오후 1시</ReviewP>
+                </ReviewLi>
+              </ReviewText>
             </LiFirst>
           </UlFirst>
           <UlSecond>
@@ -292,16 +360,16 @@ export default Footer;
 
 const FootBox = styled.div`
   font-family: "Noto Sans KR", sans-serif;
-  width: 1020px;
-  margin: 0 auto;
+  border-top: 1px solid rgb(247, 247, 247);
 `;
 
 const Bot1Flex = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 30px 0 50px 0;
-  border-top: 1px solid rgb(153, 153, 153);
-  border-bottom: 1px solid rgb(153, 153, 153);
+  border-bottom: 1px solid rgb(247, 247, 247);
+  width: 1050px;
+  margin: 0 auto;
 `;
 
 const TitleFlex = styled.div`
@@ -311,13 +379,18 @@ const TitleFlex = styled.div`
 
 const H3Text = styled.h3`
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   margin: 0;
+  margin-bottom: 16px;
 `;
 
 const H3Text2 = styled.h3`
   font-size: 28px;
   line-height: 40px;
+`;
+
+const H3Div = styled.div`
+  margin-bottom: 22px;
 `;
 
 const SpanText = styled.span`
@@ -328,18 +401,13 @@ const SpanText = styled.span`
 
 const UlFirst = styled.ul`
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 13px;
 `;
 
 const LiFirst = styled.li`
-  width: 140px;
-  height: 40px;
-  border: 1px solid rgb(226, 226, 226);
-  border-radius: 3px;
-  text-align: center;
-  line-height: 40px;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
 `;
 
 const UlSecond = styled.ul`
@@ -450,4 +518,32 @@ const BotLastBox = styled.div`
   background: #f7f7f7;
   color: #999;
   text-align: center;
+`;
+
+const ReviewText = styled.ul`
+  color: rgb(153, 153, 153);
+  letter-spacing: -0.5px;
+  line-height: 16.8px;
+  font-size: 14px;
+`;
+
+const ReviewLi = styled.li`
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+  margin-left: 15px;
+`;
+
+const ReviewP = styled.p`
+  ::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    background: rgb(153, 153, 153);
+    height: 11px;
+    margin: 0 6px;
+  }
+  :last-child::after {
+    display: none;
+  }
 `;
