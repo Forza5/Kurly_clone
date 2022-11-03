@@ -269,7 +269,7 @@ const SignUp = () => {
               </div>
             </StFormbox>
 
-            <Button onClick={onIdHandler} width="120px">
+            <Button onClick={onIdHandler} width="120px" height="48px">
               중복확인
             </Button>
           </StRow>
@@ -330,7 +330,7 @@ const SignUp = () => {
               )}
             </StFormbox>
 
-            <Button onClick={redundantCheck} width="120px">
+            <Button onClick={redundantCheck} width="120px" height="48px">
               중복확인
             </Button>
           </StRow>
@@ -343,7 +343,7 @@ const SignUp = () => {
                   onChange={onChangeCheckCode}
                 />
               </StFormbox>
-              <Button onClick={onCodeCheck} width="120px">
+              <Button onClick={onCodeCheck} width="120px" height="48px">
                 인증번호 확인
               </Button>
             </StRow>
