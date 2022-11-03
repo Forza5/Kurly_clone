@@ -6,8 +6,10 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
-import prev_color from "../pages/img/prev_btn_color.svg";
+
 import { useNavigate } from "react-router-dom";
+
+import prev_color from "../pages/img/prev_btn_color.svg";
 
 const PostCard = ({ number }) => {
   const navigate = useNavigate();
