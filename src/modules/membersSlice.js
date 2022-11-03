@@ -160,7 +160,6 @@ const membersSlice = createSlice({
     [AcyncCreateMember.rejected]: (state, { payload }) => {
       state.isLoading = false;
       state.error = payload;
-      console.log(state.error.response.data);
       alert("다시 입력해주세요");
     },
     //회원삭제

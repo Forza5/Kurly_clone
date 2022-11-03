@@ -217,8 +217,7 @@ const SignUp = () => {
   //가입하기 클릭 함수
   const onCreateHandler = () => {
     dispatch(AcyncCreateMember(account));
-    console.log("가입하기 버튼 누름");
-    navigate("/members/login");
+    navigate("/login");
   };
   //아이디 중복체크 버튼
   const onIdHandler = () => {
