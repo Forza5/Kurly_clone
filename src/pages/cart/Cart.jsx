@@ -34,7 +34,6 @@ const Cart = () => {
 
   const onDeleteHandler = (cartId) => {
     dispatch(AcyncDeleteCart(cartId));
-    window.location.replace("/cart");
   };
   //상품금액
   const newProductData = productData?.map((item) => {
